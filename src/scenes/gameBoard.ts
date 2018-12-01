@@ -8,6 +8,8 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     preload(): void {
+        this.load.image("tiles", "assets/2dtop-full-set.png");
+        this.load.tilemapTiledJSON("map", "assets/board01.json");
     }
 
     init(input): void {
@@ -16,6 +18,11 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     create(): void {
+        // Create the empty tilemap
+        const map = this.make.tilemap({key: "map"});
+        // Link the tileset reference with the loaded image
+        const tileset = map.addTilesetImage("2dtop-tileset-64", "tiles");
+        const baseLayer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
     }
 
 	update(): void {
