@@ -10,7 +10,9 @@ export class GameBoardScene extends Phaser.Scene {
     preload(): void {
     }
 
-    init(): void {
+    init(input): void {
+        if (input.action === 'display') {
+        }
     }
 
     create(): void {

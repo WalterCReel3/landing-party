@@ -15,7 +15,8 @@ export class RsMoveScene extends Phaser.Scene {
     }
 
     create(): void {
-        this.scene.start('GameBoardScene');
+        this.scene.start('GameBoardScene', { action: 'display' });
+        this.scene.sendToBack('GameBoardScene');
     }
 
 	update(): void {
