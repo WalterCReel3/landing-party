@@ -4,6 +4,7 @@ export class IntroScene extends Phaser.Scene {
     private introText: Phaser.GameObjects.Text;
     private background: Phaser.GameObjects.Sprite;
     private startKey: Phaser.Input.Keyboard.Key;
+    private altStartKey: Phaser.Input.Keyboard.Key;
     private firstLevelState: any;
 
     constructor() {
@@ -21,6 +22,10 @@ export class IntroScene extends Phaser.Scene {
             Phaser.Input.Keyboard.KeyCodes.ENTER
         );
         this.startKey.isDown = false;
+        this.altStartKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.SPACE
+        );
+        this.altStartKey.isDown = false;
 
         this.firstLevelState = {
         };
@@ -29,10 +34,11 @@ export class IntroScene extends Phaser.Scene {
     create(): void {
         console.log('In create');
         this.add.image(640, 640, 'background');
+        this.add.text(700, 500, 'Press ENTER to start', { font: '32px Courier', fill: '#ffff00' })
     }
 
     update(): void {
-        if (this.startKey.isDown) {
+        if (this.startKey.isDown || this.altStartKey.isDown) {
             this.scene.start('RsMoveScene', this.firstLevelState);
             this.scene.stop('IntroScene');
         }
