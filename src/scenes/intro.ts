@@ -1,8 +1,11 @@
 import Phaser = require('phaser');
 
+import { LevelOneScene } from './levelOne';
+
 export class IntroScene extends Phaser.Scene {
     private introText: Phaser.GameObjects.Text;
 	private background: Phaser.GameObjects.Sprite;
+    private startKey: Phaser.Input.Keyboard.Key;
 
     constructor() {
         super({
@@ -15,6 +18,10 @@ export class IntroScene extends Phaser.Scene {
     }
 
     init(): void {
+        this.startKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ENTER
+        );
+        this.startKey.isDown = false;
     }
 
     create(): void {
@@ -36,5 +43,8 @@ export class IntroScene extends Phaser.Scene {
     }
 
 	update(): void {
+        if (this.startKey.isDown) {
+            this.scene.start('LevelOneScene');
+        }
 	}
 }
