@@ -1,6 +1,8 @@
 import Phaser = require('phaser');
 
 export class GameBoardScene extends Phaser.Scene {
+    private inputState: any;
+
     constructor() {
         super({
             key: "GameBoardScene"
@@ -13,8 +15,7 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     init(input): void {
-        if (input.action === 'display') {
-        }
+        this.inputState = input;
     }
 
     create(): void {

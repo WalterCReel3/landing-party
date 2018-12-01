@@ -4,6 +4,7 @@ export class IntroScene extends Phaser.Scene {
     private introText: Phaser.GameObjects.Text;
     private background: Phaser.GameObjects.Sprite;
     private startKey: Phaser.Input.Keyboard.Key;
+    private firstLevelState: any;
 
     constructor() {
         super({
@@ -20,6 +21,9 @@ export class IntroScene extends Phaser.Scene {
             Phaser.Input.Keyboard.KeyCodes.ENTER
         );
         this.startKey.isDown = false;
+
+        this.firstLevelState = {
+        };
     }
 
     create(): void {
@@ -29,7 +33,8 @@ export class IntroScene extends Phaser.Scene {
 
     update(): void {
         if (this.startKey.isDown) {
-            this.scene.switch('RsMoveScene');
+            this.scene.start('RsMoveScene', this.firstLevelState);
+            this.scene.stop('IntroScene');
         }
     }
 }

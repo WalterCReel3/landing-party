@@ -1,6 +1,8 @@
 import Phaser = require('phaser');
 
 export class RsMoveScene extends Phaser.Scene {
+    private inputState: any;
+
     constructor() {
         super({
           key: "RsMoveScene",
@@ -11,7 +13,8 @@ export class RsMoveScene extends Phaser.Scene {
     preload(): void {
     }
 
-    init(): void {
+    init(input): void {
+        this.inputState = input;
     }
 
     create(): void {
