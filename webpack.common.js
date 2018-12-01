@@ -4,7 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
   entry: './src/main.ts',
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(['dist', 'docs']),
     new HtmlWebpackPlugin({
       title: 'Landing Party'
     })
