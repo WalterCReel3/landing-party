@@ -1,11 +1,38 @@
 import * as _ from "lodash";
 import Phaser = require('phaser');
 
+/// <reference path="../phaser.d.ts"/>
+
 class Game {
+    phaser;
     player;
 
     constructor() {
         this.player = null;
+        this.startPhaser();
+    }
+
+    startPhaser() {
+        let self = this;
+        let config = {
+            type: Phaser.WEBGL,
+            width: 800,
+            height: 600,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 300 },
+                    debug: false
+                }
+            },
+            scene: {
+                preload: function() { self.preload(this) },
+                create: function() { self.create(this) },
+                update: function() { self.update(this) }
+            }
+        };
+
+        this.phaser = new Phaser.Game(config);
     }
 
     preload(phaser) {
@@ -37,7 +64,8 @@ class Game {
 
         phaser.anims.create({
             key: 'left',
-            frames: phaser.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frames: phaser.anims.generateFrameNumbers(
+                'dude', { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1
         });
@@ -50,7 +78,8 @@ class Game {
 
         phaser.anims.create({
             key: 'right',
-            frames: phaser.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frames: phaser.anims.generateFrameNumbers(
+                'dude', { start: 5, end: 8 }),
             frameRate: 10,
             repeat: -1
         });
@@ -82,34 +111,3 @@ class Game {
 let game = new Game();
 
 
-function preload() {
-    game.preload(this);
-}
-
-function create() {
-    game.create(this);
-}
-
-function update() {
-    game.update(this);
-}
-
-let config = {
-    type: Phaser.WEBGL,
-    width: 800,
-    height: 600,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 300 },
-            debug: false
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-};
-
-let phaser = new Phaser.Game(config);
