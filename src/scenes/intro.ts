@@ -1,7 +1,5 @@
 import Phaser = require('phaser');
 
-import { LevelOneScene } from './levelOne';
-
 export class IntroScene extends Phaser.Scene {
     private introText: Phaser.GameObjects.Text;
 	private background: Phaser.GameObjects.Sprite;
@@ -9,7 +7,7 @@ export class IntroScene extends Phaser.Scene {
 
     constructor() {
         super({
-            key: "IntroScene"
+            key: 'IntroScene'
         });
     }
 
@@ -44,7 +42,7 @@ export class IntroScene extends Phaser.Scene {
 
 	update(): void {
         if (this.startKey.isDown) {
-            this.scene.start('LevelOneScene');
+            this.scene.switch('RsMoveScene');
         }
 	}
 }
