@@ -2,7 +2,7 @@ import Phaser = require('phaser');
 
 export class IntroScene extends Phaser.Scene {
     private introText: Phaser.GameObjects.Text;
-	private background: Phaser.GameObjects.Sprite;
+    private background: Phaser.GameObjects.Sprite;
     private startKey: Phaser.Input.Keyboard.Key;
 
     constructor() {
@@ -12,7 +12,7 @@ export class IntroScene extends Phaser.Scene {
     }
 
     preload(): void {
-		this.load.image('background', 'assets/sky.png');
+		    this.load.image('background', 'assets/titlebackground.png');
     }
 
     init(): void {
@@ -23,26 +23,13 @@ export class IntroScene extends Phaser.Scene {
     }
 
     create(): void {
-		console.log('In create');
-		this.add.image(400, 300, 'background');
-
-        this.introText = this.add.text(
-            this.sys.canvas.width / 2,
-            this.sys.canvas.height / 2,
-            "Landing Party",
-            {
-				fontFamily: "Connection",
-				fontSize: 38,
-				stroke: "#fff",
-				strokeThickness: 6,
-				fill: "#000000"
-            }
-        );
+		    console.log('In create');
+        this.add.image(640, 640, 'background');
     }
 
-	update(): void {
+    update(): void {
         if (this.startKey.isDown) {
             this.scene.switch('RsMoveScene');
         }
-	}
+    }
 }
