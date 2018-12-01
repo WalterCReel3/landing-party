@@ -2,7 +2,9 @@ import * as _ from "lodash";
 import Phaser = require('phaser');
 
 import { IntroScene } from './scenes/intro';
-import { LevelOneScene } from './scenes/levelOne';
+import { GameBoardScene } from './scenes/gameBoard';
+import { RsMoveScene } from './scenes/rsMove';
+import { RsPlayScene } from './scenes/rsPlay';
 
 /// <reference path="../phaser.d.ts"/>
 
@@ -26,7 +28,7 @@ class Game {
                     debug: false
                 }
             },
-            scene: [ IntroScene, LevelOneScene ]
+            scene: [ IntroScene, GameBoardScene, RsMoveScene, RsPlayScene ]
         }
 
         this.phaser = new Phaser.Game(config);

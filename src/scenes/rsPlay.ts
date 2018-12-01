@@ -1,9 +1,9 @@
 import Phaser = require('phaser');
 
-export class LevelOneScene extends Phaser.Scene {
+export class RsPlayScene extends Phaser.Scene {
     constructor() {
         super({
-            key: "LevelOneScene"
+            key: "RsPlayScene"
         });
     }
 
