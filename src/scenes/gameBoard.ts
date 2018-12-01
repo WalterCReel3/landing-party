@@ -25,6 +25,9 @@ export class GameBoardScene extends Phaser.Scene {
         const tileset = map.addTilesetImage("2dtop-tileset-64", "tiles");
         const baseLayer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
         baseLayer.setCollisionBetween(12, 44);
+
+        if (!this.inputState.playerLocation) {
+        }
     }
 
 	update(): void {
