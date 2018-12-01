@@ -14,7 +14,7 @@ export class IntroScene extends Phaser.Scene {
     }
 
     preload(): void {
-		this.load.image('background', '../../assets/sky.png');
+		this.load.image('background', 'assets/sky.png');
     }
 
     init(): void {
@@ -26,7 +26,7 @@ export class IntroScene extends Phaser.Scene {
 
     create(): void {
 		console.log('In create');
-		this.add.image(400, 300, 'sky');
+		this.add.image(400, 300, 'background');
 
         this.introText = this.add.text(
             this.sys.canvas.width / 2,
