@@ -12,7 +12,7 @@ export class IntroScene extends Phaser.Scene {
     }
 
     preload(): void {
-		    this.load.image('background', 'assets/titlebackground.png');
+        this.load.image('background', 'assets/titlebackground.png');
     }
 
     init(): void {
@@ -23,7 +23,7 @@ export class IntroScene extends Phaser.Scene {
     }
 
     create(): void {
-		    console.log('In create');
+        console.log('In create');
         this.add.image(640, 640, 'background');
     }
 
