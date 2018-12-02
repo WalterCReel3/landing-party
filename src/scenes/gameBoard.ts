@@ -1,6 +1,6 @@
 import Phaser = require('phaser');
 import { Map, MapObject } from "../map";
-import { EntityManager } from "../entity";
+import { EntityManager, Entity } from "../entity";
 import Vector2 = Phaser.Math.Vector2;
 
 export class GameBoardScene extends Phaser.Scene {
@@ -11,6 +11,7 @@ export class GameBoardScene extends Phaser.Scene {
     private redshirts: Array<any>;
     private map: Map;
     private entityManager: EntityManager;
+    private entityList: Array<Entity>;
 
     constructor() {
         super({
@@ -20,6 +21,7 @@ export class GameBoardScene extends Phaser.Scene {
         this.map = null;
         this.redshirts = [];
         this.entityManager = new EntityManager(this);
+        this.entityList = [];
     }
 
     preload(): void {
@@ -36,7 +38,6 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     loadMap(name: string): void {
-        console.log("Loading map...");
         if (this.map) {
             this.map.release();
         }
@@ -49,7 +50,9 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     makeEntity(mapObject: MapObject): any {
-        return this.entityManager.makeEntity(mapObject);
+        let entity = this.entityManager.makeEntity(mapObject);
+        this.entityList.push(entity);
+        return entity;
     }
 
     loadSprites(): void {
@@ -68,7 +71,6 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     create(): void {
-        console.log('got created');
         this.loadMap("pathtest");
         this.loadSprites();
 
