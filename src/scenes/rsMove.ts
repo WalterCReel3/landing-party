@@ -6,7 +6,7 @@ export class RsMoveScene extends Phaser.Scene {
     constructor() {
         super({
           key: "RsMoveScene",
-          active: true
+          active: false
         });
     }
 
@@ -15,13 +15,25 @@ export class RsMoveScene extends Phaser.Scene {
 
     init(input): void {
         this.inputState = input;
-    }
 
-    create(): void {
-        this.scene.start('GameBoardScene', { action: 'display' });
+        this.scene.launch('GameBoardScene', { action: 'display', parentActor: 'RsMoveScene' });
         this.scene.sendToBack('GameBoardScene');
     }
 
+    create(): void {
+    }
+
 	update(): void {
+        //const testRect = this.add
+        //    .graphics({
+        //        x: 300,
+        //        y: 400,
+        //        fillStyle: { color: 0x55ffff, alpha: 0.1 }
+        //    })
+        //    .fillRect(100, 100, 100, 100);
 	}
+
+    sendMessage(message): void {
+        console.log(message);
+    }
 }
