@@ -1,15 +1,5 @@
-const boardExample = [
-    [1, 1, 1, 1],
-    [1, 0, 0, 1],
-    [1, 1, 1, 1]
-];
-
-const startExample = [0, 1];
-
-const goalExample = [0, 3];
-
 const infinity = 999999;
-const djikstra = ({ board, start, goal }) => {
+const djikstra = ({ board, start, goal, limitDistance }) => {
     const unconnectedBoard = board.map((row, y) => {
         return row.map((binary, x) => {
             return {
@@ -24,7 +14,6 @@ const djikstra = ({ board, start, goal }) => {
     });
     const [sx, sy] = start;
     const [gx, gy] = goal;
-    console.log(sx, sy)
 
     const resolve = (x, y) => {
         return unconnectedBoard[y] && unconnectedBoard[y][x];
@@ -63,6 +52,10 @@ const djikstra = ({ board, start, goal }) => {
         }
         current.connections.forEach(node => {
             const newDist = current.distance + 1;
+            if(limitDistance && limitDistance < newDist){
+                return; //stop the search
+            }
+
             if (node.distance > newDist) {
                 node.distance = newDist;
                 const old = current.path.slice(0);
@@ -83,21 +76,32 @@ const djikstra = ({ board, start, goal }) => {
 
     const mapNodesToCoords = (nodeList) =>
         nodeList.map(node => ([node.x, node.y]));
+    
     return {
-        path: goalNode && mapNodesToCoords(goalNode.path),
+        path: goalNode && goalNode.path && mapNodesToCoords(goalNode.path),
         valid: mapNodesToCoords(movableTiles),
     }
 }
 
-const getValid = ({ board, position }) => {
-    const { valid } = djikstra({ board, start: position, goal: [-1000000, -1000000] });
+const getValid = ({ board, position, limitDistance }) => {
+    const { valid } = djikstra({ board, start: position, goal: [-1000000, -1000000], limitDistance });
     return valid;
 }
 
-const getPath = ({ board, start, goal }) => {
-    const { path } = djikstra({ board, start, goal });
+const getPath = ({ board, start, goal, limitDistance }) => {
+    const { path } = djikstra({ board, start, goal, limitDistance });
     return path;
 }
+
+const boardExample = [
+    [1, 1, 1, 1],
+    [1, 0, 0, 1],
+    [1, 1, 0, 1]
+];
+
+const startExample = [1, 2];
+
+const goalExample = [2, 0];
 
 export {
     getPath,
