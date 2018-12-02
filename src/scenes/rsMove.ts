@@ -10,7 +10,7 @@ export class RsMoveScene extends Phaser.Scene {
     private orderMarker: Graphics;
     private playerOrder: Vector2;
     private redshirtOrder: Array<Vector2>;
-    private movableTiles: Array<Graphics>;
+    private movableTiles: Array<any>;
     private orderTarget: any;
 
     constructor() {
@@ -24,6 +24,7 @@ export class RsMoveScene extends Phaser.Scene {
     }
 
     preload(): void {
+      this.load.image('button', 'assets/tileselect.png');
     }
 
     init(input): void {
@@ -31,6 +32,9 @@ export class RsMoveScene extends Phaser.Scene {
 
         this.scene.launch('GameBoardScene', { action: 'display', parentActor: 'RsMoveScene' });
         this.scene.sendToBack('GameBoardScene');
+
+        this.movableTiles = [];
+        this.redshirtOrder = [];
     }
 
     create(): void {
@@ -52,8 +56,21 @@ export class RsMoveScene extends Phaser.Scene {
         this.selectionMarker.lineStyle(4, 0x14ff05, 0.5);
         this.selectionMarker.strokeRect(0, 0, 64, 64);
         this.selectionMarker.setVisible(false);
-<<<<<<< HEAD
         this.input.on('pointerdown', (pointer, gameObject) => {
+          if (gameObject && gameObject.length !== 0) {
+            let newOrder = Map.screenToTileCoords(new Vector2(gameObject[0].x, gameObject[0].y));
+            if (this.orderTarget.player) {
+              this.playerOrder = newOrder;
+              this.orderTarget = {};
+            }
+            if (typeof(this.orderTarget.redshirt)!=='undefined') {
+              this.redshirtOrder[this.orderTarget.redshirt] = newOrder;
+              this.orderTarget = {};
+            }
+            console.log('orders now :', this.playerOrder, this.redshirtOrder );
+          }
+          this.destroyButtons();
+
           let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
           let screenCoords = Map.tileToScreenCoords(tileCoords);
 
@@ -61,22 +78,32 @@ export class RsMoveScene extends Phaser.Scene {
           this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
 
           if (this.isAtPlayerCoords(tileCoords)) {
-            console.log('clicked player');
             this.orderTarget = {player:true};
+
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x-1, tileCoords.y));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x+1, tileCoords.y));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y+1));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y-1));
           }
           let redshirtIndex = this.getIndexOfRedshirtClicked(tileCoords);
           if (-1 !== redshirtIndex) {
-            console.log('clicked redshirt #'+redshirtIndex);
             this.orderTarget = {redshirt:redshirtIndex};
-          }
-=======
-        this.input.on('pointerdown', (pointer) => {
-            let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
-            let screenCoords = Map.tileToScreenCoords(tileCoords);
 
-            this.selectionMarker.setVisible(true);
-            this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
->>>>>>> master
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x-1, tileCoords.y));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x+1, tileCoords.y));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y+1));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y-1));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x+1, tileCoords.y+1));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x+1, tileCoords.y-1));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x-1, tileCoords.y+1));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x-1, tileCoords.y-1));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x-2, tileCoords.y));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x+2, tileCoords.y));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y+2));
+            this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y-2));
+          }
         });
     }
 
@@ -87,19 +114,7 @@ export class RsMoveScene extends Phaser.Scene {
         let screenCoords = Map.tileToScreenCoords(tileCoords);
 
         this.tileMarker.setX(screenCoords.x).setY(screenCoords.y);
-<<<<<<< HEAD
-
-        // const tileMarker = this.add
-        //     .graphics({
-        //         x: 300,
-        //         y: 400,
-        //         fillStyle: { color: 0x55ffff, alpha: 0.1 }
-        //     })
-        //     .fillRect(100, 100, 100, 100);
-    }
-=======
 	}
->>>>>>> master
 
     sendMessage(message): void {
         // console.log(message);
@@ -108,15 +123,12 @@ export class RsMoveScene extends Phaser.Scene {
     spawnOrderTargetButton(tileCoords): void {
       if (this.canMoveCoords(tileCoords)) {
         let screenCoords = Map.tileToScreenCoords(tileCoords);
-        let button = this.add
-            .graphics({
-                x: screenCoords.x,
-                y: screenCoords.y,
-            })
-        button.fillStyle(0x55ffff, 0.25);
-        button.fillRect(0, 0, 64, 64);
-        // button.setInt
+        this.movableTiles.push(this.add.image(screenCoords.x + 32, screenCoords.y + 32, 'button').setInteractive());
       }
+    }
+
+    destroyButtons(): void {
+      this.movableTiles.map((x) => {x.destroy();});
     }
 
 // Start hardcoded stubs: TODO implement plz
