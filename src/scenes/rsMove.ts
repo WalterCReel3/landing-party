@@ -46,11 +46,17 @@ export class RsMoveScene extends Phaser.Scene {
         this.redshirtOrders = [];
     }
 
+    gameBoard(): Phaser.Scene {
+        const gameScene = this.scene.get('GameBoardScene');
+        return gameScene;
+    }
+
     create(): void {
         const proceedButton = this.add.text(1000, 100, "Proceed", { font: '32px Courier', fill: 0xffffff });
         proceedButton.setInteractive();
         proceedButton.on('pointerdown', () => {
-            const gameScene: any = this.scene.get('GameBoardScene');
+
+            const gameScene = this.gameBoard();
 			// This is where I need the start and end pos for each redshirt
             // this.redshirtOrders // This is the array of start/desired end positions for redshirts
             gameScene.sendMessage({ action: 'update-redshirt-positions', redshirts: this.redshirtOrders });
@@ -149,7 +155,7 @@ export class RsMoveScene extends Phaser.Scene {
         });
 
         // Testing
-        //const gamescene: any = this.scene.get('GameBoardScene');
+        //const gamescene = this.gameBoard();
         //function testfunc() {
         //    gamescene.sendMessage({ action: 'update-redshirt-positions',
         //        redshirts: [ { newX: 5, newY: 7, oldX:3, oldY: 2 } ]
