@@ -44,15 +44,15 @@ export class RsMoveScene extends Phaser.Scene {
                 x: screenCoords.x,
                 y: screenCoords.y,
             })
-        this.selectionMarker.lineStyle(4, 0xffff00, 0.5);
+        this.selectionMarker.lineStyle(4, 0x14ff05, 0.5);
         this.selectionMarker.strokeRect(0, 0, 64, 64);
         this.selectionMarker.setVisible(false);
         this.input.on('pointerdown', (pointer) => {
-          let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
-          let screenCoords = Map.tileToScreenCoords(tileCoords);
+            let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
+            let screenCoords = Map.tileToScreenCoords(tileCoords);
 
-          this.selectionMarker.setVisible(true);
-          this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
+            this.selectionMarker.setVisible(true);
+            this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
         });
     }
 
@@ -63,14 +63,6 @@ export class RsMoveScene extends Phaser.Scene {
         let screenCoords = Map.tileToScreenCoords(tileCoords);
 
         this.tileMarker.setX(screenCoords.x).setY(screenCoords.y);
-
-        // const tileMarker = this.add
-        //     .graphics({
-        //         x: 300,
-        //         y: 400,
-        //         fillStyle: { color: 0x55ffff, alpha: 0.1 }
-        //     })
-        //     .fillRect(100, 100, 100, 100);
 	}
 
     sendMessage(message): void {
