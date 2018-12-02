@@ -19,7 +19,7 @@ export class Map  {
     // Map is responsible for bootstrapping the play field into the active game
     // scene with respect to graphical representation and game entity
     // _description_ and valid movement spaces represented by the board.  It is
-    // the int1ent that a map can be swapped out for another in the main
+    // the intent that a map can be swapped out for another in the main
     // GameScene seamlessly given the right screne transitions.
 
     tilemap: Tilemaps.Tilemap;
