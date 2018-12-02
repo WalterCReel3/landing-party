@@ -2,6 +2,7 @@ import Phaser = require('phaser');
 import { Map, MapObject } from "../map";
 import { EntityManager, Entity } from "../entity";
 import Vector2 = Phaser.Math.Vector2;
+import { MovementOrder } from "../commands";
 
 export class GameBoardScene extends Phaser.Scene {
     private inputState: any;
@@ -87,9 +88,18 @@ export class GameBoardScene extends Phaser.Scene {
     sendMessage(message: any): void {
         if (message.action === 'update-redshirt-positions') {
             message.redshirts.forEach(redshirt => {
-                const redshirtSprite = this.redshirts.filter(obj => obj.x === redshirt.oldX && obj.y === redshirt.oldY)[0];
-                const newCoords = Map.tileToScreenCoords(new Vector2(redshirt.newX, redshirt.newY));
-                redshirtSprite.graphics.setX(newCoords.x).setY(newCoords.y);
+                if (redshirt.requestedTile) {
+                    console.log('-=-', redshirt);
+                    const currX = redshirt.startingTile.x;
+                    const currY = redshirt.startingTile.y;
+                    const newX = redshirt.requestedTile.x;
+                    const newY = redshirt.requestedTile.y;
+                    console.log(currX, currY)
+                    console.log(this.redshirts)
+                    const redshirtSprite = this.redshirts.filter(obj => obj.position.x === currX && obj.position.y === currY)[0];
+                    const newCoords = Map.tileToScreenCoords(new Vector2(newX, newY));
+                    redshirtSprite.sprite.setX(newCoords.x + 32).setY(newCoords.y + 32);
+                }
             });
         }
     }
