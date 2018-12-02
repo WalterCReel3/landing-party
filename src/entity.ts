@@ -33,7 +33,7 @@ class Player extends CharacterEntity {
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
         super();
         console.log('Player in');
-        this.position = new Vector2().copy(Map.screenToTileCoords(mapObject.coords));
+        this.position = new Vector2().copy(mapObject.coords);
         let screenCoords = this.spriteCoords(this.position);
         this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Player.spriteName);
         console.log('Player out');
