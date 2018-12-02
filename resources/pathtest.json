@@ -95,6 +95,26 @@
                  "width":0,
                  "x":228,
                  "y":304
+                }, 
+                {
+                 "height":0,
+                 "id":5,
+                 "name":"pursuer",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":-1.33333333333326,
+                         "y":-36
+                        }],
+                 "rotation":0,
+                 "type":"pursuer",
+                 "visible":true,
+                 "width":0,
+                 "x":989.333333333333,
+                 "y":305.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -102,7 +122,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":5,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.3",
