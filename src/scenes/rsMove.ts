@@ -63,12 +63,14 @@ export class RsMoveScene extends Phaser.Scene {
 
     setupOrders(): void {
         // create blank orders for later
-        const gameBoard = this.gameBoard();
-        let player = gameBoard.player;
+        let gameBoard = this.gameBoard();
+        console.log('**', gameBoard);
+        let player = gameBoard.getPlayer();
+        console.log('**', gameBoard.getPlayer());
         this.playerOrder = new MovementOrder(player.position, player);
 
         gameBoard.redshirts.forEach((redshirt) => {
-            this.redshirtOrders.push(new MovementOrder(new Vector2(3,2), redshirt));
+            this.redshirtOrders.push(new MovementOrder(redshirt.position, redshirt));
         });
     }
 
@@ -83,7 +85,7 @@ export class RsMoveScene extends Phaser.Scene {
             gameScene.sendMessage({ action: 'update-redshirt-positions', redshirts: this.redshirtOrders });
         });
 
-        this.setupOrders();
+        // this.setupOrders();
 
         let tileCoords = new Vector2(1, 1);
         let screenCoords = Map.tileToScreenCoords(tileCoords);
@@ -104,7 +106,7 @@ export class RsMoveScene extends Phaser.Scene {
         this.selectionMarker.strokeRect(0, 0, 64, 64);
         this.selectionMarker.setVisible(false);
 
-        this.setupMarkers();
+        // this.setupMarkers();
 
         // Handle all click events
         this.input.on('pointerdown', (pointer, gameObject) => {

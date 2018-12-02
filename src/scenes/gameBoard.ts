@@ -5,14 +5,14 @@ import Vector2 = Phaser.Math.Vector2;
 import { MovementOrder } from "../commands";
 
 export class GameBoardScene extends Phaser.Scene {
-    private inputState: any;
-    private player: any;
-    private objective: any;
-    private pursuer: any;
-    private redshirts: Array<any>;
-    private map: Map;
-    private entityManager: EntityManager;
-    private entityList: Array<Entity>;
+    inputState: any;
+    player: any;
+    objective: any;
+    pursuer: any;
+    redshirts: Array<any>;
+    map: Map;
+    entityManager: EntityManager;
+    entityList: Array<Entity>;
 
     constructor() {
         super({
@@ -56,7 +56,11 @@ export class GameBoardScene extends Phaser.Scene {
         return entity;
     }
 
-    loadSprites(): void {
+    getPlayer(): any {
+        return this.player;
+    }
+
+    loadEntities(): void {
         this.player = this.makeEntity(this.map.getPlayerObject());
         this.objective = this.makeSprite(this.map.getObjectiveObject(), 'star');
         let redshirts = this.map.getRedshirtObjects()
@@ -68,12 +72,11 @@ export class GameBoardScene extends Phaser.Scene {
 
         console.log('!!', this.redshirts)
         this.pursuer = this.makeSprite(this.map.getPursuerObject(), 'monster');
-
     }
 
     create(): void {
         this.loadMap("pathtest");
-        this.loadSprites();
+        this.loadEntities();
 
         if (!this.inputState.playerLocation) {
         }
