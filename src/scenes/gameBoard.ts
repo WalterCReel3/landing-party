@@ -59,7 +59,7 @@ export class GameBoardScene extends Phaser.Scene {
         redshirts.forEach((redshirtObject) => {
             this.redshirts.push(this.makeSprite(redshirtObject, 'redshirt'));
         });
-        this.pursuer = this.makeSprite(this.map.getPursuerObject(), 'monster');
+        this.pursuer = this.makeEntity(this.map.getPursuerObject());
     }
 
     create(): void {
