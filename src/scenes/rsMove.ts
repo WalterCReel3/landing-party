@@ -49,13 +49,13 @@ export class RsMoveScene extends Phaser.Scene {
         const proceedButton = this.add.text(1000, 100, "Proceed", { font: '32px Courier', fill: 0xffffff });
         proceedButton.setInteractive();
         proceedButton.on('pointerdown', () => {
-            constant gameScene = this.scene.get('GameBoardScene');
+            const gameScene = this.scene.get('GameBoardScene');
 			// This is where I need the start and end pos for each redshirt
         });
       
         let tileCoords = new Vector2(1, 1);
         let screenCoords = Map.tileToScreenCoords(tileCoords);
-        this.tileMarer = this.add
+        this.tileMarker = this.add
             .graphics({
                 x: screenCoords.x,
                 y: screenCoords.y,
