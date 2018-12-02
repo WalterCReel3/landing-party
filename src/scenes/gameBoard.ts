@@ -5,6 +5,7 @@ export class GameBoardScene extends Phaser.Scene {
     private inputState: any;
     private player: any;
     private objective: any;
+    private pursuer: any;
     private redshirts: Array<any>;
     private map: Map;
 
@@ -19,6 +20,7 @@ export class GameBoardScene extends Phaser.Scene {
 
     preload(): void {
         this.load.image("redshirt", "assets/lp_char_redshirt.png");
+        this.load.image("monster", "assets/monster.png");
         this.load.image("star", "assets/star.png");
         this.load.image("player", "assets/lp_char_player.png");
         this.load.image("tiles", "assets/2dtop-full-set.png");
@@ -49,6 +51,7 @@ export class GameBoardScene extends Phaser.Scene {
         redshirts.forEach((redshirtObject) => {
             this.redshirts.push(this.makeSprite(redshirtObject, 'redshirt'));
         });
+        this.pursuer = this.makeSprite(this.map.getPursuerObject(), 'monster');
     }
 
     create(): void {

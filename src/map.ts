@@ -59,6 +59,10 @@ export class Map  {
         return this.mapObjects['objective'];
     }
 
+    getPursuerObject(): MapObject {
+        return this.mapObjects['pursuer'];
+    }
+
     getRedshirtObjects(): Array<MapObject> {
         let res = [];
         Object.keys(this.mapObjects).forEach((k) => {
