@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import Phaser = require('phaser');
 
 import { IntroScene } from './scenes/intro';
+import { HowToScene } from './scenes/howto';
 import { GameBoardScene } from './scenes/gameBoard';
 import { RsMoveScene } from './scenes/rsMove';
 import { RsPlayScene } from './scenes/rsPlay';
@@ -27,7 +28,7 @@ class Game {
                     debug: false
                 }
             },
-            scene: [ IntroScene, GameBoardScene, RsMoveScene, RsPlayScene ]
+            scene: [ IntroScene, HowToScene, GameBoardScene, RsMoveScene, RsPlayScene ]
         }
 
         this.phaser = new Phaser.Game(config);
@@ -36,5 +37,3 @@ class Game {
 
 
 let game = new Game();
-
-
