@@ -18,10 +18,14 @@ export class RsMoveScene extends Phaser.Scene {
     }
 
     create(): void {
-        this.scene.start('GameBoardScene', { action: 'display' });
+        this.scene.start('GameBoardScene', { action: 'display', parentActor: 'RsMoveScene' });
         this.scene.sendToBack('GameBoardScene');
     }
 
 	update(): void {
 	}
+
+    sendMessage(message): void {
+        console.log(message);
+    }
 }

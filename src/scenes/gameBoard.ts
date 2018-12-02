@@ -57,6 +57,9 @@ export class GameBoardScene extends Phaser.Scene {
         if (!this.inputState.playerLocation) {
         }
 
+        const parentActor: any = this.scene.get(this.inputState.parentActor);
+        parentActor.sendMessage('It vorks!');
+
     }
 
 	update(): void {
