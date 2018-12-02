@@ -57,12 +57,23 @@ export class GameBoardScene extends Phaser.Scene {
         this.objective = this.makeSprite(this.map.getObjectiveObject(), 'star');
         let redshirts = this.map.getRedshirtObjects()
         redshirts.forEach((redshirtObject) => {
-            this.redshirts.push(this.makeSprite(redshirtObject, 'redshirt'));
+            console.log('++', redshirtObject)
+            const redshirtSprite = {
+                graphics: this.makeSprite(redshirtObject, 'redshirt'),
+                id: redshirtObject.name,
+                x: redshirtObject.coords.x,
+                y: redshirtObject.coords.y
+            };
+            this.redshirts.push(redshirtSprite);
         });
-        this.pursuer = this.makeEntity(this.map.getPursuerObject());
+
+        console.log('!!', this.redshirts)
+        this.pursuer = this.makeSprite(this.map.getPursuerObject(), 'monster');
+
     }
 
     create(): void {
+        console.log('got created');
         this.loadMap("pathtest");
         this.loadSprites();
 
@@ -75,4 +86,14 @@ export class GameBoardScene extends Phaser.Scene {
 
 	update(): void {
 	}
+
+    sendMessage(message: any): void {
+        if (message.action === 'update-redshirt-positions') {
+            message.redshirts.forEach(redshirt => {
+                const redshirtSprite = this.redshirts.filter(obj => obj.x === redshirt.oldX && obj.y === redshirt.oldY)[0];
+                const newCoords = Map.tileToScreenCoords(new Vector2(redshirt.newX, redshirt.newY));
+                redshirtSprite.graphics.setX(newCoords.x).setY(newCoords.y);
+            });
+        }
+    }
 }

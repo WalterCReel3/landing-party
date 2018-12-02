@@ -46,6 +46,13 @@ export class RsMoveScene extends Phaser.Scene {
     }
 
     create(): void {
+        const proceedButton = this.add.text(1000, 100, "Proceed", { font: '32px Courier', fill: 0xffffff });
+        proceedButton.setInteractive();
+        proceedButton.on('pointerdown', () => {
+            const gameScene = this.scene.get('GameBoardScene');
+			// This is where I need the start and end pos for each redshirt
+        });
+      
         let tileCoords = new Vector2(1, 1);
         let screenCoords = Map.tileToScreenCoords(tileCoords);
         this.tileMarker = this.add
@@ -131,6 +138,15 @@ export class RsMoveScene extends Phaser.Scene {
                 this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y-2));
             }
         });
+
+        // Testing
+        //const gamescene: any = this.scene.get('GameBoardScene');
+        //function testfunc() {
+        //    gamescene.sendMessage({ action: 'update-redshirt-positions',
+        //        redshirts: [ { newX: 5, newY: 7, oldX:3, oldY: 2 } ]
+        //    });
+        //}
+        //setTimeout(testfunc, 4000);
     }
 
     update(): void {
