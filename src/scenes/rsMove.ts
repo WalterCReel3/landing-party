@@ -12,6 +12,7 @@ export class RsMoveScene extends Phaser.Scene {
     private redshirtOrder: Array<Vector2>;
     private movableTiles: Array<any>;
     private orderTarget: any;
+    private destination: Vector2;
 
     constructor() {
         super({
@@ -21,6 +22,7 @@ export class RsMoveScene extends Phaser.Scene {
 
         this.tileMarker = null;
         this.selectionMarker = null;
+        this.destination = null;
     }
 
     preload(): void {
@@ -76,6 +78,7 @@ export class RsMoveScene extends Phaser.Scene {
 
           this.selectionMarker.setVisible(true);
           this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
+          this.destination = tileCoords;
 
           if (this.isAtPlayerCoords(tileCoords)) {
             this.orderTarget = {player:true};
