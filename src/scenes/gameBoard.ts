@@ -66,8 +66,10 @@ export class GameBoardScene extends Phaser.Scene {
             };
             this.redshirts.push(redshirtSprite);
         });
+
         console.log('!!', this.redshirts)
         this.pursuer = this.makeSprite(this.map.getPursuerObject(), 'monster');
+
     }
 
     create(): void {
