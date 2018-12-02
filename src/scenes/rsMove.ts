@@ -49,9 +49,10 @@ export class RsMoveScene extends Phaser.Scene {
                 x: screenCoords.x,
                 y: screenCoords.y,
             })
-        this.selectionMarker.lineStyle(4, 0xffff00, 0.5);
+        this.selectionMarker.lineStyle(4, 0x14ff05, 0.5);
         this.selectionMarker.strokeRect(0, 0, 64, 64);
         this.selectionMarker.setVisible(false);
+<<<<<<< HEAD
         this.input.on('pointerdown', (pointer, gameObject) => {
           let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
           let screenCoords = Map.tileToScreenCoords(tileCoords);
@@ -68,6 +69,14 @@ export class RsMoveScene extends Phaser.Scene {
             console.log('clicked redshirt #'+redshirtIndex);
             this.orderTarget = {redshirt:redshirtIndex};
           }
+=======
+        this.input.on('pointerdown', (pointer) => {
+            let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
+            let screenCoords = Map.tileToScreenCoords(tileCoords);
+
+            this.selectionMarker.setVisible(true);
+            this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
+>>>>>>> master
         });
     }
 
@@ -78,6 +87,7 @@ export class RsMoveScene extends Phaser.Scene {
         let screenCoords = Map.tileToScreenCoords(tileCoords);
 
         this.tileMarker.setX(screenCoords.x).setY(screenCoords.y);
+<<<<<<< HEAD
 
         // const tileMarker = this.add
         //     .graphics({
@@ -87,6 +97,9 @@ export class RsMoveScene extends Phaser.Scene {
         //     })
         //     .fillRect(100, 100, 100, 100);
     }
+=======
+	}
+>>>>>>> master
 
     sendMessage(message): void {
         // console.log(message);
