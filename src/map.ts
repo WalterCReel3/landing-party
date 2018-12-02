@@ -55,6 +55,10 @@ export class Map  {
         return this.mapObjects['captain'];
     }
 
+    getObjectiveObject(): MapObject {
+        return this.mapObjects['objective'];
+    }
+
     getRedshirtObjects(): Array<MapObject> {
         let res = [];
         Object.keys(this.mapObjects).forEach((k) => {
