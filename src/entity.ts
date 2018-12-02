@@ -8,6 +8,7 @@ export interface Entity {
     sprite: any;
 
     setPosition(coord: Vector2): Entity;
+    spriteCoords(): Vector2;
 }
 
 class BaseEntity {
@@ -22,7 +23,7 @@ class CharacterEntity extends BaseEntity {
         this.id = mapObject.name;
     }
 
-    spriteCoords(coords: Vector2): Vector2 {
+    spriteCoords(): Vector2 {
         let screenCoords = Map.tileToScreenCoords(this.position);
         // Include offsets from absolute screen-tile coordinates
         return new Vector2(screenCoords.x + 33, screenCoords.y + 32);
@@ -40,7 +41,7 @@ class Player extends CharacterEntity {
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
         super(mapObject);
         this.position = new Vector2().copy(mapObject.coords);
-        let screenCoords = this.spriteCoords(this.position);
+        let screenCoords = this.spriteCoords();
         this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Player.spriteName);
     }
 
@@ -52,7 +53,7 @@ class RedShirt extends CharacterEntity {
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
         super(mapObject);
         this.position = new Vector2().copy(mapObject.coords);
-        let screenCoords = this.spriteCoords(this.position);
+        let screenCoords = this.spriteCoords();
         this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, RedShirt.spriteName);
     }
 }
@@ -63,7 +64,7 @@ class Pursuer extends CharacterEntity {
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
         super(mapObject);
         this.position = new Vector2().copy(mapObject.coords);
-        let screenCoords = this.spriteCoords(this.position);
+        let screenCoords = this.spriteCoords();
         this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Pursuer.spriteName);
     }
 }

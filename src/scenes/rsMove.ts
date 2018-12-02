@@ -51,6 +51,27 @@ export class RsMoveScene extends Phaser.Scene {
         return gameScene;
     }
 
+    setupMarkers(): void {
+        // Creat the ghost images for order placements
+        const gameBoard = this.gameBoard();
+        this.playerOrderMarker = this.add.image(0, 0, 'player').setAlpha(0.5).setVisible(false);
+
+        gameBoard.redshirts.forEach((redshirt) => {
+            this.redshirtOrderMarkers.push(this.add.image(0, 0, 'redshirt').setAlpha(0.5).setVisible(false));
+        });
+    }
+
+    setupOrders(): void {
+        // create blank orders for later
+        const gameBoard = this.gameBoard();
+        let player = gameBoard.player;
+        this.playerOrder = new MovementOrder(player.position, player);
+
+        gameBoard.redshirts.forEach((redshirt) => {
+            this.redshirtOrders.push(new MovementOrder(new Vector2(3,2), redshirt));
+        });
+    }
+
     create(): void {
         const proceedButton = this.add.text(1000, 100, "Proceed", { font: '32px Courier', fill: 0xffffff });
         proceedButton.setInteractive();
@@ -62,11 +83,7 @@ export class RsMoveScene extends Phaser.Scene {
             gameScene.sendMessage({ action: 'update-redshirt-positions', redshirts: this.redshirtOrders });
         });
 
-        // create blank orders for later
-        // TODO get this to use real data
-        this.playerOrder = new MovementOrder(new Vector2(2,2), {player:true});
-        this.redshirtOrders[0] = new MovementOrder(new Vector2(3,2), {redshirt:true, index:0});
-        this.redshirtOrders[1] = new MovementOrder(new Vector2(3,4), {redshirt:true, index:1});
+        this.setupOrders();
 
         let tileCoords = new Vector2(1, 1);
         let screenCoords = Map.tileToScreenCoords(tileCoords);
@@ -87,9 +104,8 @@ export class RsMoveScene extends Phaser.Scene {
         this.selectionMarker.strokeRect(0, 0, 64, 64);
         this.selectionMarker.setVisible(false);
 
-        this.playerOrderMarker = this.add.image(32, 32, 'player').setAlpha(0.5).setVisible(false);
-        //TODO better way to init # of redshirt ghost icons
-        this.redshirtOrderMarkers = ['',''].map((x) => {return this.add.image(32, 32, 'redshirt').setAlpha(0.5).setVisible(false);})
+        this.setupMarkers();
+
         // Handle all click events
         this.input.on('pointerdown', (pointer, gameObject) => {
             // If an entity was clicked (destination button) handle first
