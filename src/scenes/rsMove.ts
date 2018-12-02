@@ -46,7 +46,7 @@ export class RsMoveScene extends Phaser.Scene {
         this.redshirtOrders = [];
     }
 
-    gameBoard(): Phaser.Scene {
+    gameBoard(): any {
         const gameScene = this.scene.get('GameBoardScene');
         return gameScene;
     }
