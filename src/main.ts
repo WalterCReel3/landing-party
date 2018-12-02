@@ -33,6 +33,7 @@ class Game {
 
         this.phaser = new Phaser.Game(config);
         this.phaser.scene.add('GameBoardScene', GameBoardScene, false);
+        this.phaser.scene.add('HowToScene', HowToScene, false);
         this.phaser.scene.add('RsMoveScene', RsMoveScene, false);
     }
 }
