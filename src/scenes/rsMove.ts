@@ -6,6 +6,7 @@ import Graphics = Phaser.GameObjects.Graphics;
 export class RsMoveScene extends Phaser.Scene {
     private inputState: any;
     private tileMarker: Graphics;
+    private selectionMarker: Graphics;
 
     constructor() {
         super({
@@ -14,6 +15,7 @@ export class RsMoveScene extends Phaser.Scene {
         });
 
         this.tileMarker = null;
+        this.selectionMarker = null;
     }
 
     preload(): void {
@@ -36,7 +38,22 @@ export class RsMoveScene extends Phaser.Scene {
             })
         this.tileMarker.fillStyle(0x55ffff, 0.25);
         this.tileMarker.fillRect(0, 0, 64, 64);
-        this.tileMarker.setActive(false);
+
+        this.selectionMarker = this.add
+            .graphics({
+                x: screenCoords.x,
+                y: screenCoords.y,
+            })
+        this.selectionMarker.lineStyle(4, 0xffff00, 0.5);
+        this.selectionMarker.strokeRect(0, 0, 64, 64);
+        this.selectionMarker.setVisible(false);
+        this.input.on('pointerdown', (pointer) => {
+          let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
+          let screenCoords = Map.tileToScreenCoords(tileCoords);
+
+          this.selectionMarker.setVisible(true);
+          this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
+        });
     }
 
 	update(): void {
@@ -45,7 +62,6 @@ export class RsMoveScene extends Phaser.Scene {
         let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
         let screenCoords = Map.tileToScreenCoords(tileCoords);
 
-        this.tileMarker.setActive(true);
         this.tileMarker.setX(screenCoords.x).setY(screenCoords.y);
 
         // const tileMarker = this.add
