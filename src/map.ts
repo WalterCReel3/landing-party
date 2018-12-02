@@ -79,6 +79,6 @@ export class Map  {
     }
 
     static tileToScreenCoords(point: Vector2): Vector2 {
-        return new Vector2(point.x * 64, point.y * 64);
+        return new Vector2((point.x * 64) + 38, (point.y * 64) + 32);
     }
 }
