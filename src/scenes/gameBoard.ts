@@ -58,13 +58,8 @@ export class GameBoardScene extends Phaser.Scene {
         let redshirts = this.map.getRedshirtObjects()
         redshirts.forEach((redshirtObject) => {
             console.log('++', redshirtObject)
-            const redshirtSprite = {
-                graphics: this.makeSprite(redshirtObject, 'redshirt'),
-                id: redshirtObject.name,
-                x: redshirtObject.coords.x,
-                y: redshirtObject.coords.y
-            };
-            this.redshirts.push(redshirtSprite);
+            let redshirt = this.makeEntity(redshirtObject);
+            this.redshirts.push(redshirt);
         });
 
         console.log('!!', this.redshirts)
