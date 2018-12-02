@@ -1,5 +1,5 @@
 import Phaser = require('phaser');
-import { Map } from "../map";
+import { Map, MapObject } from "../map";
 
 export class GameBoardScene extends Phaser.Scene {
     private inputState: any;
@@ -13,6 +13,7 @@ export class GameBoardScene extends Phaser.Scene {
             key: "GameBoardScene"
         });
         this.map = null;
+        this.redshirts = [];
     }
 
     preload(): void {
@@ -28,30 +29,30 @@ export class GameBoardScene extends Phaser.Scene {
         this.inputState = input;
     }
 
-    loadMap(name: string) {
+    loadMap(name: string): void {
         if (this.map) {
             this.map.release();
         }
         this.map = new Map(this, name);
     }
 
+    makeSprite(mapObject: MapObject, spriteName: string): any {
+        let screenCoords = Map.tileToScreenCoords(mapObject.coords);
+        return this.physics.add.sprite(screenCoords.x, screenCoords.y, spriteName);
+    }
+
+    loadSprites(): void {
+        this.player = this.makeSprite(this.map.getPlayerObject(), 'player');
+        this.objective = this.makeSprite(this.map.getObjectiveObject(), 'star');
+        let redshirts = this.map.getRedshirtObjects()
+        redshirts.forEach((redshirtObject) => {
+            this.redshirts.push(this.makeSprite(redshirtObject, 'redshirt'));
+        });
+    }
+
     create(): void {
         this.loadMap("pathtest");
-
-        let playerObject = this.map.getPlayerObject();
-        let playerCoords = Map.tileToScreenCoords(playerObject.coords);
-        this.player = this.physics.add.sprite(playerCoords.x, playerCoords.y, 'player')
-
-        let objectiveObject = this.map.getObjectiveObject();
-        let objectiveCoords = Map.tileToScreenCoords(objectiveObject.coords);
-        this.objective = this.physics.add.sprite(objectiveCoords.x, objectiveCoords.y, 'star')
-
-        let redshirts = this.map.getRedshirtObjects()
-        redshirts.forEach((redshirt) => {
-            let screenCoords = Map.tileToScreenCoords(redshirt.coords);
-            console.log(screenCoords);
-            this.physics.add.sprite(screenCoords.x, screenCoords.y, 'redshirt');
-        });
+        this.loadSprites();
 
         if (!this.inputState.playerLocation) {
         }

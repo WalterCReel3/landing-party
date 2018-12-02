@@ -3,7 +3,7 @@ import Phaser = require('phaser');
 import Vector2 = Phaser.Math.Vector2;
 import Tilemaps = Phaser.Tilemaps;
 
-class MapObject {
+export class MapObject {
     typeName: string;
     name: string;
     coords: Vector2;
