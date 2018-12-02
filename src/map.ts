@@ -16,6 +16,12 @@ export class MapObject {
 }
 
 export class Map  {
+    // Map is responsible for bootstrapping the play field into the 
+    // active game scene with respect to graphical representation
+    // and game entity _description_.  It is the intent that a map
+    // can be swapped out for another in the main GameScene seamlessly
+    // given the right screne transitions.
+
     tilemap: Tilemaps.Tilemap;
     tileset: Tilemaps.Tileset;
     tileLayer: Tilemaps.StaticTilemapLayer;
@@ -86,7 +92,11 @@ export class Map  {
                            Math.floor(point.y / Map.tileSize));
     }
 
+    static tileToSpriteCoords(point: Vector2): Vector2 {
+        return new Vector2((point.x * 64) + 33, (point.y * 64) + 32);
+    }
+
     static tileToScreenCoords(point: Vector2): Vector2 {
-        return new Vector2((point.x * 64) + 38, (point.y * 64) + 32);
+        return new Vector2((point.x * 64), (point.y * 64));
     }
 }

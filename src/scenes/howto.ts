@@ -20,7 +20,7 @@ export class HowToScene extends Phaser.Scene {
   preload(): void {
     this.load.image('player', 'assets/lp_char_player.png');
     this.load.image('goal', 'assets/star.png');
-    this.load.image('pursuit', 'assets/bomb.png');
+    this.load.image('pursuit', 'assets/monster.png');
     this.load.image('redshirt', 'assets/lp_char_redshirt.png');
   }
 
@@ -42,7 +42,7 @@ export class HowToScene extends Phaser.Scene {
 
     this.add.image(480, 90, 'player').setScale(2);
     this.add.image(1020, 170, 'goal').setScale(2);
-    this.add.image(730, 290, 'pursuit').setScale(2);
+    this.add.image(730, 290, 'pursuit').setScale(1.5);
     this.add.image(860, 360, 'redshirt').setScale(2);
 
     this.add.text(80, 80, 'You are the captain',

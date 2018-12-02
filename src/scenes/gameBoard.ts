@@ -1,5 +1,6 @@
 import Phaser = require('phaser');
 import { Map, MapObject } from "../map";
+import Vector2 = Phaser.Math.Vector2;
 
 export class GameBoardScene extends Phaser.Scene {
     private inputState: any;
@@ -40,7 +41,7 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     makeSprite(mapObject: MapObject, spriteName: string): any {
-        let screenCoords = Map.tileToScreenCoords(mapObject.coords);
+        let screenCoords = Map.tileToSpriteCoords(mapObject.coords);
         return this.physics.add.sprite(screenCoords.x, screenCoords.y, spriteName);
     }
 
@@ -63,7 +64,6 @@ export class GameBoardScene extends Phaser.Scene {
 
         const parentActor: any = this.scene.get(this.inputState.parentActor);
         parentActor.sendMessage('It works!');
-
     }
 
 	update(): void {
