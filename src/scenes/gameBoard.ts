@@ -10,7 +10,8 @@ export class GameBoardScene extends Phaser.Scene {
 
     constructor() {
         super({
-            key: "GameBoardScene"
+            key: "GameBoardScene",
+            active: false
         });
         this.map = null;
         this.redshirts = [];
@@ -58,7 +59,7 @@ export class GameBoardScene extends Phaser.Scene {
         }
 
         const parentActor: any = this.scene.get(this.inputState.parentActor);
-        parentActor.sendMessage('It vorks!');
+        parentActor.sendMessage('It works!');
 
     }
 

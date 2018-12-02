@@ -5,7 +5,7 @@ import { IntroScene } from './scenes/intro';
 import { HowToScene } from './scenes/howto';
 import { GameBoardScene } from './scenes/gameBoard';
 import { RsMoveScene } from './scenes/rsMove';
-import { RsPlayScene } from './scenes/rsPlay';
+//import { RsPlayScene } from './scenes/rsPlay';
 
 /// <reference path="../phaser.d.ts"/>
 
@@ -28,10 +28,12 @@ class Game {
                     debug: false
                 }
             },
-            scene: [ IntroScene, HowToScene, GameBoardScene, RsMoveScene, RsPlayScene ]
+            scene: [ IntroScene ]
         }
 
         this.phaser = new Phaser.Game(config);
+        this.phaser.scene.add('GameBoardScene', GameBoardScene, false);
+        this.phaser.scene.add('RsMoveScene', RsMoveScene, false);
     }
 }
 
