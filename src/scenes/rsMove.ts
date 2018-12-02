@@ -93,26 +93,24 @@ export class RsMoveScene extends Phaser.Scene {
         // Handle all click events
         this.input.on('pointerdown', (pointer, gameObject) => {
             // If an entity was clicked (destination button) handle first
-            if (gameObject && gameObject.length !== 0) {
+            if (gameObject && gameObject.length !== 0 && gameObject[0].type !=='Text') {
                 let newOrder = Map.screenToTileCoords(new Vector2(gameObject[0].x, gameObject[0].y));
                 if (this.orderTarget.player) {
                     this.playerOrder.requestedTile = newOrder;
-                    this.orderTarget = {};
                     this.playerOrderMarker.x = gameObject[0].x;
                     this.playerOrderMarker.y = gameObject[0].y;
                     this.playerOrderMarker.setVisible(true);
                 }
                 if (typeof(this.orderTarget.redshirt)!=='undefined') {
                     this.redshirtOrders[this.orderTarget.redshirt].requestedTile = newOrder;
-
                     this.redshirtOrderMarkers[this.orderTarget.redshirt].x = gameObject[0].x;
                     this.redshirtOrderMarkers[this.orderTarget.redshirt].y = gameObject[0].y;
                     this.redshirtOrderMarkers[this.orderTarget.redshirt].setVisible(true);
-                    this.orderTarget = {};
                 }
                 console.log('orders now :', this.playerOrder, this.redshirtOrders );
             }
             // clear any active buttons on click, both as resolve and cancel
+            this.orderTarget = {};
             this.destroyButtons();
 
             // Update selection (last clicked tile)
