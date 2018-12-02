@@ -34,14 +34,17 @@ export class RsMoveScene extends Phaser.Scene {
                 x: screenCoords.x,
                 y: screenCoords.y,
             })
-        this.tileMarker.fillStyle(0x55ffff, 0.1);
+        this.tileMarker.fillStyle(0x55ffff, 0.25);
         this.tileMarker.fillRect(0, 0, 64, 64);
         this.tileMarker.setActive(false);
     }
 
 	update(): void {
-        let tileCoords = new Vector2(2, 2);
+        let pointer = this.input.activePointer;
+
+        let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
         let screenCoords = Map.tileToScreenCoords(tileCoords);
+
         this.tileMarker.setActive(true);
         this.tileMarker.setX(screenCoords.x).setY(screenCoords.y);
 
