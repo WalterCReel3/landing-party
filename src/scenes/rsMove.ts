@@ -7,6 +7,7 @@ export class RsMoveScene extends Phaser.Scene {
     private inputState: any;
     private tileMarker: Graphics;
     private selectionMarker: Graphics;
+    private destination: Vector2;
 
     constructor() {
         super({
@@ -16,6 +17,7 @@ export class RsMoveScene extends Phaser.Scene {
 
         this.tileMarker = null;
         this.selectionMarker = null;
+        this.destination = null;
     }
 
     preload(): void {
@@ -53,6 +55,7 @@ export class RsMoveScene extends Phaser.Scene {
 
             this.selectionMarker.setVisible(true);
             this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
+            this.destination = tileCoords;
         });
     }
 

@@ -1,5 +1,6 @@
 import Phaser = require('phaser');
 import { Map, MapObject } from "../map";
+import { EntityManager } from "../entity";
 import Vector2 = Phaser.Math.Vector2;
 
 export class GameBoardScene extends Phaser.Scene {
@@ -9,6 +10,7 @@ export class GameBoardScene extends Phaser.Scene {
     private pursuer: any;
     private redshirts: Array<any>;
     private map: Map;
+    private entityManager: EntityManager;
 
     constructor() {
         super({
@@ -17,23 +19,24 @@ export class GameBoardScene extends Phaser.Scene {
         });
         this.map = null;
         this.redshirts = [];
+        this.entityManager = new EntityManager(this);
     }
 
     preload(): void {
-        this.load.image("redshirt", "assets/lp_char_redshirt.png");
-        this.load.image("monster", "assets/monster.png");
-        this.load.image("star", "assets/star.png");
-        this.load.image("player", "assets/lp_char_player.png");
+        this.entityManager.loadAssets();
+
         this.load.image("tiles", "assets/2dtop-full-set.png");
         this.load.tilemapTiledJSON("pathtest", "assets/pathtest.json");
         this.load.tilemapTiledJSON("board01", "assets/board01.json");
     }
 
     init(input): void {
+        console.log(input);
         this.inputState = input;
     }
 
     loadMap(name: string): void {
+        console.log("Loading map...");
         if (this.map) {
             this.map.release();
         }
@@ -45,8 +48,12 @@ export class GameBoardScene extends Phaser.Scene {
         return this.physics.add.sprite(screenCoords.x, screenCoords.y, spriteName);
     }
 
+    makeEntity(mapObject: MapObject): any {
+        return this.entityManager.makeEntity(mapObject);
+    }
+
     loadSprites(): void {
-        this.player = this.makeSprite(this.map.getPlayerObject(), 'player');
+        this.player = this.makeEntity(this.map.getPlayerObject());
         this.objective = this.makeSprite(this.map.getObjectiveObject(), 'star');
         let redshirts = this.map.getRedshirtObjects()
         redshirts.forEach((redshirtObject) => {
