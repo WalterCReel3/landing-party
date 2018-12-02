@@ -131,6 +131,15 @@ export class RsMoveScene extends Phaser.Scene {
             this.spawnOrderTargetButton(new Vector2(tileCoords.x, tileCoords.y-2));
           }
         });
+
+        // Testing
+        const gamescene: any = this.scene.get('GameBoardScene');
+        function testfunc() {
+            gamescene.sendMessage({ action: 'update-redshirt-positions',
+                redshirts: [ { id: 'redshirt1', newX: 5, newY: 7 } ]
+            });
+        }
+        setTimeout(testfunc, 4000);
     }
 
     update(): void {

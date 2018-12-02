@@ -57,8 +57,14 @@ export class GameBoardScene extends Phaser.Scene {
         this.objective = this.makeSprite(this.map.getObjectiveObject(), 'star');
         let redshirts = this.map.getRedshirtObjects()
         redshirts.forEach((redshirtObject) => {
-            this.redshirts.push(this.makeSprite(redshirtObject, 'redshirt'));
+            console.log(redshirtObject)
+            const redshirtSprite = {
+                graphics: this.makeSprite(redshirtObject, 'redshirt'),
+                id: redshirtObject.name
+            };
+            this.redshirts.push(redshirtSprite);
         });
+        console.log('!!', this.redshirts)
         this.pursuer = this.makeSprite(this.map.getPursuerObject(), 'monster');
     }
 
@@ -77,6 +83,14 @@ export class GameBoardScene extends Phaser.Scene {
 	update(): void {
 	}
 
-    sendMessage(message): void {
+    sendMessage(message: any): void {
+        if (message.action === 'update-redshirt-positions') {
+            message.redshirts.forEach(redshirt => {
+                const redshirtSprite = this.redshirts.filter(obj => obj.id === redshirt.id)[0];
+                const newX = Map.tileToSpriteCoords(redshirt.newX);
+                const newY = Map.tileToSpriteCoords(redshirt.newY);
+                redshirtSprite.graphics.setX(newX).setY(newY);
+            });
+        }
     }
 }
