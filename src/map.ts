@@ -16,17 +16,18 @@ export class MapObject {
 }
 
 export class Map  {
-    // Map is responsible for bootstrapping the play field into the 
-    // active game scene with respect to graphical representation
-    // and game entity _description_.  It is the intent that a map
-    // can be swapped out for another in the main GameScene seamlessly
-    // given the right screne transitions.
+    // Map is responsible for bootstrapping the play field into the active game
+    // scene with respect to graphical representation and game entity
+    // _description_ and valid movement spaces represented by the board.  It is
+    // the int1ent that a map can be swapped out for another in the main
+    // GameScene seamlessly given the right screne transitions.
 
     tilemap: Tilemaps.Tilemap;
     tileset: Tilemaps.Tileset;
     tileLayer: Tilemaps.StaticTilemapLayer;
     objectLayer: Tilemaps.ObjectLayer;
     mapObjects: Object;
+    board: Array<Array<number>>;
 
     constructor(phaser: any, name: string) {
         // Create the empty tilemap
@@ -46,15 +47,31 @@ export class Map  {
 
         // Load up the map objects
         this.loadMapObjects(this.objectLayer.objects);
+
+        // Load up board representation
+        this.loadBoard(this.tilemap);
     }
 
-    loadMapObjects(objects: Array<any>) {
+    loadMapObjects(objects: Array<any>): void {
         this.mapObjects = {};
         objects.forEach((obj) => {
             let mapCoords = Map.screenToTileCoords(new Vector2(obj['x'], obj['y']));
             let mapObject = new MapObject(obj['type'], obj['name'], mapCoords);
             this.mapObjects[obj.name] = mapObject;
         });
+    }
+
+    loadBoard(tilemap: Tilemaps.Tilemap): void {
+        this.board = [];
+
+        for (let j = 0; j < tilemap.height; j++) {
+            let row = [];
+            this.board.push(row);
+            for (let i = 0; i < tilemap.width; i++) {
+                let tile = tilemap.getTileAt(i, j);
+                row.push(tile.collideDown);
+            }
+        }
     }
 
     getPlayerObject(): MapObject {
@@ -87,7 +104,6 @@ export class Map  {
     static tileSize = 64;
 
     static screenToTileCoords(point: Vector2): Vector2 {
-        console.log(point);
         return new Vector2(Math.floor(point.x / Map.tileSize),
                            Math.floor(point.y / Map.tileSize));
     }

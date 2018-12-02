@@ -34,6 +34,7 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     loadMap(name: string): void {
+        console.log("Loading map...");
         if (this.map) {
             this.map.release();
         }
