@@ -1,9 +1,18 @@
+import * as _ from "lodash";
 import Phaser = require('phaser');
 import Vector2 = Phaser.Math.Vector2;
 import Tilemaps = Phaser.Tilemaps;
 
 class MapObject {
+    typeName: string;
+    name: string;
+    coords: Vector2;
 
+    constructor(typeName: string, name: string, coords: Vector2) {
+        this.typeName = typeName;
+        this.name = name;
+        this.coords = coords;
+    }
 }
 
 export class Map  {
@@ -12,7 +21,6 @@ export class Map  {
     tileLayer: Tilemaps.StaticTilemapLayer;
     objectLayer: Tilemaps.ObjectLayer;
     mapObjects: Object;
-    initialCoords: Object;
 
     constructor(phaser: any, name: string) {
         // Create the empty tilemap
@@ -31,25 +39,41 @@ export class Map  {
         this.objectLayer = this.tilemap.getObjectLayer('Object Layer 1');
 
         // Load up the map objects
-        this.initialCoords = {};
         this.loadMapObjects(this.objectLayer.objects);
     }
 
     loadMapObjects(objects: Array<any>) {
+        this.mapObjects = {};
         objects.forEach((obj) => {
-            let mapCoords = new Vector2(obj['x'], obj['y']);
-            this.initialCoords[obj.name] = Map.screenToTileCoords(mapCoords);
+            let mapCoords = Map.screenToTileCoords(new Vector2(obj['x'], obj['y']));
+            let mapObject = new MapObject(obj['type'], obj['name'], mapCoords);
+            this.mapObjects[obj.name] = mapObject;
         });
+    }
+
+    getPlayerObject(): MapObject {
+        return this.mapObjects['captain'];
+    }
+
+    getRedshirtObjects(): Array<MapObject> {
+        let res = [];
+        Object.keys(this.mapObjects).forEach((k) => {
+            let v = this.mapObjects[k];
+            if (v.typeName == 'redshirt') {
+                res.push(v);
+            }
+        });
+        return res;
     }
 
     release(): void {
         // unload resources against the scene
     }
 
-
     static tileSize = 64;
 
     static screenToTileCoords(point: Vector2): Vector2 {
+        console.log(point);
         return new Vector2(Math.floor(point.x / Map.tileSize),
                            Math.floor(point.y / Map.tileSize));
     }

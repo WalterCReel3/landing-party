@@ -4,6 +4,7 @@ import { Map } from "../map";
 export class GameBoardScene extends Phaser.Scene {
     private inputState: any;
     private player: any;
+    private redshirts: Array<any>;
     private map: Map;
 
     constructor() {
@@ -34,8 +35,17 @@ export class GameBoardScene extends Phaser.Scene {
 
     create(): void {
         this.loadMap("pathtest");
-        let playerCoords = Map.tileToScreenCoords(this.map.initialCoords['captain']);
-        this.player = this.physics.add.sprite(playerCoords.x, playerCoords.y, 'player')
+        let playerObject = this.map.getPlayerObject();
+        let screenCoords = Map.tileToScreenCoords(playerObject.coords);
+        console.log(screenCoords);
+        this.player = this.physics.add.sprite(screenCoords.x, screenCoords.y, 'player')
+
+        let redshirts = this.map.getRedshirtObjects()
+        redshirts.forEach((redshirt) => {
+            let screenCoords = Map.tileToScreenCoords(redshirt.coords);
+            console.log(screenCoords);
+            this.physics.add.sprite(screenCoords.x, screenCoords.y, 'redshirt');
+        });
 
         if (!this.inputState.playerLocation) {
         }
