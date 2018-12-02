@@ -3,6 +3,7 @@ import { Map, MapObject } from "./map";
 import Vector2 = Phaser.Math.Vector2;
 
 export interface Entity {
+    id: string;
     position: Vector2;
     sprite: any;
 
@@ -10,11 +11,17 @@ export interface Entity {
 }
 
 class BaseEntity {
+    id: string;
     position: Vector2;
     sprite: any;
 }
 
 class CharacterEntity extends BaseEntity {
+    constructor(mapObject: MapObject) {
+        super();
+        this.id = mapObject.name;
+    }
+
     spriteCoords(coords: Vector2): Vector2 {
         let screenCoords = Map.tileToScreenCoords(this.position);
         // Include offsets from absolute screen-tile coordinates
@@ -31,12 +38,10 @@ class Player extends CharacterEntity {
     static spriteName = "player";
 
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
-        super();
-        console.log('Player in');
+        super(mapObject);
         this.position = new Vector2().copy(mapObject.coords);
         let screenCoords = this.spriteCoords(this.position);
         this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Player.spriteName);
-        console.log('Player out');
     }
 
 }
@@ -45,10 +50,10 @@ class RedShirt extends CharacterEntity {
     static spriteName = "redshirt";
 
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
-        super();
+        super(mapObject);
         this.position = new Vector2().copy(mapObject.coords);
         let screenCoords = this.spriteCoords(this.position);
-        this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Player.spriteName);
+        this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, RedShirt.spriteName);
     }
 }
 
@@ -56,7 +61,7 @@ class Pursuer extends CharacterEntity {
     static spriteName = "monster";
 
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
-        super();
+        super(mapObject);
         this.position = new Vector2().copy(mapObject.coords);
         let screenCoords = this.spriteCoords(this.position);
         this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Pursuer.spriteName);
