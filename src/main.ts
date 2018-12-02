@@ -35,7 +35,6 @@ class Game {
         this.phaser.scene.add('GameBoardScene', GameBoardScene, false);
         this.phaser.scene.add('HowToScene', HowToScene, false);
         this.phaser.scene.add('RsMoveScene', RsMoveScene, false);
-        this.phaser.scene.add('HowToScene', HowToScene, false);
     }
 }
 

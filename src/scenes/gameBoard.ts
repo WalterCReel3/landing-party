@@ -75,26 +75,8 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
 	update(): void {
-        if (this.highlightTiles) {
-            this.highlightTiles.forEach(tileCoords => {
-                let coords = Map.tileToScreenCoords(tileCoords);
-                this.add
-                    .graphics({
-                        x: coords.x,
-                        y: coords.y,
-                        fillStyle: { color: 0x55ffff, alpha: 0.3 }
-                    })
-                    .fillRect(coords.x, coords.y, 64, 64)
-            });
-            this.highlightTiles = [];
-        }
 	}
 
     sendMessage(message): void {
-        if (message.action === 'draw-highlights') {
-            this.highlightTiles = message.highlightTiles;
-       } else if (message.action === 'stop-highlights') {
-            this.highlightTiles = [];
-       }
     }
 }
