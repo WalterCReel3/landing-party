@@ -96,7 +96,7 @@ export class GameBoardScene extends Phaser.Scene {
                     console.log(this.redshirts)
                     const redshirtSprite = this.redshirts.filter(obj => obj.position.x === currX && obj.position.y === currY)[0];
                     const newCoords = Map.tileToScreenCoords(new Vector2(newX, newY));
-                    redshirtSprite.sprite.setX(newCoords.x).setY(newCoords.y);
+                    redshirtSprite.sprite.setX(newCoords.x + 32).setY(newCoords.y + 32);
                 }
             });
         }
