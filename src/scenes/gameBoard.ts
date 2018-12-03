@@ -36,6 +36,9 @@ export class GameBoardScene extends Phaser.Scene {
     init(input): void {
         console.log(input);
         this.inputState = input;
+
+        this.scene.launch('RsMoveScene',);
+        this.scene.bringToTop('RsMoveScene');
     }
 
     loadMap(name: string): void {
@@ -71,7 +74,7 @@ export class GameBoardScene extends Phaser.Scene {
         });
 
         console.log('!!', this.redshirts)
-        this.pursuer = this.makeSprite(this.map.getPursuerObject(), 'monster');
+        this.pursuer = this.makeEntity(this.map.getPursuerObject());
     }
 
     create(): void {
@@ -80,37 +83,37 @@ export class GameBoardScene extends Phaser.Scene {
 
         if (!this.inputState.playerLocation) {
         }
-
-        const parentActor: any = this.scene.get(this.inputState.parentActor);
-        parentActor.sendMessage('It works!');
     }
 
-	update(): void {
-	}
+    update(): void {
+    }
 
     sendMessage(message: any): void {
         if (message.action === 'update-redshirt-positions') {
-            message.redshirts.forEach(redshirt => {
-                if (redshirt.requestedTile) {
-                    console.log('-=-', redshirt);
-                    const currX = redshirt.startingTile.x;
-                    const currY = redshirt.startingTile.y;
-                    const newX = redshirt.requestedTile.x;
-                    const newY = redshirt.requestedTile.y;
-                    console.log(currX, currY)
+            message.redshirts.forEach(moveCommand => {
+                if (moveCommand.requestedTile) {
+                    console.log('-=-', moveCommand);
                     console.log(this.redshirts)
-                    const redshirtSprite = this.redshirts.filter(obj => obj.position.x === currX && obj.position.y === currY)[0];
-                    const newCoords = Map.tileToScreenCoords(new Vector2(newX, newY));
-                    redshirtSprite.sprite.setX(newCoords.x + 32).setY(newCoords.y + 32);
+                    const redshirt = this.redshirts.filter((obj) => {
+                        return moveCommand.startingTile.equals(obj.position);
+                    })[0];
+                    redshirt.setPosition(moveCommand.requestedTile);
                 }
             });
         } else if (message.action === 'update-player-position') {
             if (message.player.requestedTile) {
-                const newX = message.player.requestedTile.x;
-                const newY = message.player.requestedTile.Y;
-                const newCoords = Map.tileToScreenCoords(new Vector2(newX, newY));
-                this.player.setPosition(newCoords);
+                let destination = message.player.requestedTile;
+                if (destination) {
+                    this.player.setPosition(destination);
+                }
             }
+        } else if (message.action === 'update-pursuer-position') {
+            const {x, y} = message;
+            const newPos = new Vector2(x, y);
+            this.pursuer.setPosition(newPos);
+
+            const newCoords = Map.tileToScreenCoords(newPos);
+            this.pursuer.sprite.setX(newCoords.x + 32).setY(newCoords.y + 32);
         }
     }
 }

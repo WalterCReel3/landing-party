@@ -29,8 +29,10 @@ class CharacterEntity extends BaseEntity {
         return new Vector2(screenCoords.x + 33, screenCoords.y + 32);
     }
 
-    setPosition(coords): Entity {
-        this.position.copy(coords);
+    setPosition(pos: Vector2): Entity {
+        this.position.copy(pos);
+        let coords = this.spriteCoords();
+        this.sprite.setX(coords.x).setY(coords.y);
         return this;
     }
 }
