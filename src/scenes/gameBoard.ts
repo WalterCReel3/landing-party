@@ -101,7 +101,7 @@ export class GameBoardScene extends Phaser.Scene {
                 }
             });
         } else if (message.action === 'update-player-position') {
-            if (message.player.requestedTile) {
+            if (message.player) {
                 let destination = message.player.requestedTile;
                 if (destination) {
                     this.player.setPosition(destination);
