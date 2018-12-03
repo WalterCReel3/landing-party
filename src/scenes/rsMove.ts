@@ -217,15 +217,19 @@ export class RsMoveScene extends Phaser.Scene {
 
     // Start hardcoded stubs: TODO implement plz
     isAtPlayerCoords(tileCoords): boolean {
-        return tileCoords.x === 2 && tileCoords.y === 2;
+        let gameBoard = this.gameBoard();
+        let player = gameBoard.getPlayer();
+        return tileCoords.x === player.position.x && tileCoords.y === player.position.y;
     }
 
     getIndexOfRedshirtClicked(tileCoords): number {
-        if (tileCoords.x === 3 && tileCoords.y === 2) {
-            return 0;
-        }
-        if (tileCoords.x === 3 && tileCoords.y === 4) {
-            return 1;
+        let gameBoard = this.gameBoard();
+        let redshirts = gameBoard.redshirts;
+        for (let index=0; index<redshirts.length; index++) {
+            if (tileCoords.x === redshirts[index].position.x
+                 && tileCoords.y === redshirts[index].position.y) {
+                return index;
+            }
         }
         return -1;
     }
