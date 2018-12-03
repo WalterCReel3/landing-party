@@ -71,6 +71,17 @@ class Pursuer extends CharacterEntity {
     }
 }
 
+class Objective extends CharacterEntity {
+    static spriteName = "star";
+
+    constructor(scene: Phaser.Scene, mapObject: MapObject) {
+        super(mapObject);
+        this.position = new Vector2().copy(mapObject.coords);
+        let screenCoords = this.spriteCoords();
+        this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Objective.spriteName);
+    }
+}
+
 export class EntityManager {
     scene: Phaser.Scene;
 
@@ -100,6 +111,7 @@ export class EntityManager {
     static entityTable = {
         "captain": Player,
         "redshirt": RedShirt,
-        "pursuer": Pursuer
+        "pursuer": Pursuer,
+        "objective": Objective
     }
 }

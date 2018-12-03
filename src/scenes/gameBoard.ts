@@ -62,7 +62,7 @@ export class GameBoardScene extends Phaser.Scene {
 
     loadEntities(): void {
         this.player = this.makeEntity(this.map.getPlayerObject());
-        this.objective = this.makeSprite(this.map.getObjectiveObject(), 'star');
+        this.objective = this.makeEntity(this.map.getObjectiveObject());
         let redshirts = this.map.getRedshirtObjects()
         redshirts.forEach((redshirtObject) => {
             console.log('++', redshirtObject)
