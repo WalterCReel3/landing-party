@@ -190,8 +190,16 @@ export class RsMoveScene extends Phaser.Scene {
     }
 
     spawnValidTargetButtons(startCords, distance): void {
-        let board = this.gameBoard().map.board;
-        let tiles = getValid({board: board, position:[startCords.x,startCords.y], limitDistance:distance});
+        let board = this.gameBoard();
+        let cloneBoard = board.map.getMovableBoard();
+        let player = board.getPlayer();
+        cloneBoard[player.position.y][player.position.x] = false;
+        let redshirts = board.redshirts;
+        redshirts.forEach(({position: {x, y}}) => {
+            cloneBoard[y][x] = false;
+        });
+        
+        let tiles = getValid({board: cloneBoard, position:[startCords.x,startCords.y], limitDistance:distance});
         tiles.map((tile) => this.spawnOrderTargetButton(new Vector2(tile[0],tile[1])))
     }
 
