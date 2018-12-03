@@ -94,6 +94,7 @@ export class RsMoveScene extends Phaser.Scene {
 
             const gameScene = this.gameBoard();
             gameScene.sendMessage({ action: 'update-redshirt-positions', redshirts: this.redshirtOrders });
+            gameScene.sendMessage({ action: 'update-player-position', player: this.playerOrder});
 
             this.scene.start('PursuerMoveScene');
             this.scene.stop('RsMoveScene');
