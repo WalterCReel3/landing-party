@@ -1,6 +1,7 @@
 import Phaser = require('phaser');
 import { Map, MapObject } from "../map";
 import { MovementOrder } from "../commands";
+import { getValid } from "../pathfinding";
 import Vector2 = Phaser.Math.Vector2;
 import Graphics = Phaser.GameObjects.Graphics;
 import Image = Phaser.GameObjects.Image;
@@ -155,11 +156,7 @@ export class RsMoveScene extends Phaser.Scene {
             if (this.isAtPlayerCoords(tileCoords)) {
                 this.orderTarget = {player:true}; //janky state for which thing is being ordered
 
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-1));
+                this.spawnValidTargetButtons(tileCoords, 1);
             }
 
             // If redshirt selected; figure out which one and queue movement selection for them
@@ -167,19 +164,7 @@ export class RsMoveScene extends Phaser.Scene {
             if (-1 !== redshirtIndex) {
                 this.orderTarget = {redshirt:redshirtIndex}; //janky state for which thing is being ordered
 
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y+1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y-1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y+1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y-1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-2, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+2, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+2));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-2));
+                this.spawnValidTargetButtons(tileCoords, 2);
             }
         });
 
@@ -206,11 +191,23 @@ export class RsMoveScene extends Phaser.Scene {
         // console.log(message);
     }
 
-    spawnOrderTargetButton(startCords, tileCoords): void {
-        if (this.canMoveCoords(tileCoords)) {
-            let screenCoords = Map.tileToScreenCoords(tileCoords);
-            this.movableTiles.push(this.add.image(screenCoords.x + 32, screenCoords.y + 32, 'button').setInteractive());
-        }
+    spawnValidTargetButtons(startCords, distance): void {
+        let board = this.gameBoard();
+        let cloneBoard = board.map.getMovableBoard();
+        let player = board.getPlayer();
+        cloneBoard[player.position.y][player.position.x] = false;
+        let redshirts = board.redshirts;
+        redshirts.forEach(({position: {x, y}}) => {
+            cloneBoard[y][x] = false;
+        });
+        
+        let tiles = getValid({board: cloneBoard, position:[startCords.x,startCords.y], limitDistance:distance});
+        tiles.map((tile) => this.spawnOrderTargetButton(new Vector2(tile[0],tile[1])))
+    }
+
+    spawnOrderTargetButton(tileCoords): void {
+        let screenCoords = Map.tileToScreenCoords(tileCoords);
+        this.movableTiles.push(this.add.image(screenCoords.x + 32, screenCoords.y + 32, 'button').setInteractive());
     }
 
     destroyButtons(): void {
@@ -234,9 +231,5 @@ export class RsMoveScene extends Phaser.Scene {
             }
         }
         return -1;
-    }
-
-    canMoveCoords(tileCoords): boolean {
-        return tileCoords.x > 0 && tileCoords.y > 0 && tileCoords.x < 12 && tileCoords.y < 12;
     }
 }

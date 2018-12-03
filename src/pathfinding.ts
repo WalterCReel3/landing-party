@@ -47,9 +47,6 @@ const djikstra = ({ board, start, goal, limitDistance }) => {
 
 
     const categorizeUnknownNeighbors = ({ current }) => {
-        if (!current.movable) {
-            throw new Error("wtf, did you call on a non movable tile?");
-        }
         current.connections.forEach(node => {
             const newDist = current.distance + 1;
             if(limitDistance && limitDistance < newDist){
@@ -76,7 +73,7 @@ const djikstra = ({ board, start, goal, limitDistance }) => {
 
     const mapNodesToCoords = (nodeList) =>
         nodeList.map(node => ([node.x, node.y]));
-    
+
     return {
         path: goalNode && goalNode.path && mapNodesToCoords(goalNode.path),
         valid: mapNodesToCoords(movableTiles),
