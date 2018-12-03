@@ -69,7 +69,7 @@ export class Map  {
             this.board.push(row);
             for (let i = 0; i < tilemap.width; i++) {
                 let tile = tilemap.getTileAt(i, j);
-                row.push(tile.collideDown);
+                row.push(!tile.collideDown);
             }
         }
     }

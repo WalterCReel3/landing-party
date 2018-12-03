@@ -41,14 +41,13 @@ const djikstra = ({ board, start, goal, limitDistance }) => {
     (() => {
         startNode.seen = true;
         startNode.distance = 0;
-        startNode.path = [startNode];
-        movableTiles.push(startNode);
+        startNode.path = [];
     })();
 
 
     const categorizeUnknownNeighbors = ({ current }) => {
         if (!current.movable) {
-            console.log("wtf, did you call on a non movable tile?");
+            throw new Error("wtf, did you call on a non movable tile?");
         }
         current.connections.forEach(node => {
             const newDist = current.distance + 1;
