@@ -1,15 +1,9 @@
 import Phaser = require('phaser');
 
 export class HowToScene extends Phaser.Scene {
-  private player: Phaser.GameObjects.Sprite;
-  private goal: Phaser.GameObjects.Sprite;
-  private pursuit: Phaser.GameObjects.Sprite;
-  private redshirt: Phaser.GameObjects.Sprite;
 
   private startKey: Phaser.Input.Keyboard.Key;
   private altStartKey: Phaser.Input.Keyboard.Key;
-
-  private firstLevelState: any;
 
   constructor() {
     super({
@@ -33,9 +27,6 @@ export class HowToScene extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
     this.altStartKey.isDown = false;
-
-    this.firstLevelState = {
-    };
   }
 
   create(): void {
@@ -61,7 +52,7 @@ export class HowToScene extends Phaser.Scene {
 
   update(): void {
     if (this.startKey.isDown || this.altStartKey.isDown) {
-      this.scene.start('RsMoveScene', this.firstLevelState);
+      this.scene.start('GameBoardScene');
       this.scene.stop('HowToScene');
     }
   }

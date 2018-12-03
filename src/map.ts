@@ -75,9 +75,7 @@ export class Map  {
     }
 
     getMovableBoard(): number[][] {
-        let board = this.board;
-        board.map(row => row.map(movable => movable)); //clone the board array
-        return board;
+        return JSON.parse(JSON.stringify(this.board));
     }
 
     getPlayerObject(): MapObject {
