@@ -40,9 +40,6 @@ export class RsMoveScene extends Phaser.Scene {
     init(input): void {
         this.inputState = input;
 
-        this.scene.launch('GameBoardScene', { action: 'display', parentActor: 'RsMoveScene' });
-        this.scene.sendToBack('GameBoardScene');
-
         this.movableTiles = [];
         this.redshirtOrders = [];
         this.redshirtOrderMarkers = [];

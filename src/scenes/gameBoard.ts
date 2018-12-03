@@ -36,6 +36,9 @@ export class GameBoardScene extends Phaser.Scene {
     init(input): void {
         console.log(input);
         this.inputState = input;
+
+        this.scene.launch('RsMoveScene',);
+        this.scene.bringToTop('RsMoveScene');
     }
 
     loadMap(name: string): void {
