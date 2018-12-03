@@ -5,7 +5,7 @@ import { IntroScene } from './scenes/intro';
 import { HowToScene } from './scenes/howto';
 import { GameBoardScene } from './scenes/gameBoard';
 import { RsMoveScene } from './scenes/rsMove';
-//import { RsPlayScene } from './scenes/rsPlay';
+import { PursuerMoveScene } from './scenes/pursuerMove';
 
 /// <reference path="../phaser.d.ts"/>
 
@@ -35,6 +35,7 @@ class Game {
         this.phaser.scene.add('GameBoardScene', GameBoardScene, false);
         this.phaser.scene.add('HowToScene', HowToScene, false);
         this.phaser.scene.add('RsMoveScene', RsMoveScene, false);
+        this.phaser.scene.add('PursuerMoveScene', PursuerMoveScene, false);
     }
 }
 
