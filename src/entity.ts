@@ -4,6 +4,7 @@ import Vector2 = Phaser.Math.Vector2;
 
 export interface Entity {
     id: string;
+    typeName: string;
     position: Vector2;
     sprite: any;
 
@@ -13,6 +14,7 @@ export interface Entity {
 
 class BaseEntity {
     id: string;
+    typeName: string;
     position: Vector2;
     sprite: any;
 }
@@ -21,6 +23,7 @@ class CharacterEntity extends BaseEntity {
     constructor(mapObject: MapObject) {
         super();
         this.id = mapObject.name;
+        this.typeName = mapObject.typeName;
     }
 
     spriteCoords(): Vector2 {

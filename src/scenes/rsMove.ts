@@ -1,6 +1,8 @@
 import Phaser = require('phaser');
+
 import { Map, MapObject } from "../map";
 import { MovementOrder } from "../commands";
+import { Entity } from "../entity";
 import Vector2 = Phaser.Math.Vector2;
 import Graphics = Phaser.GameObjects.Graphics;
 import Image = Phaser.GameObjects.Image;
@@ -16,7 +18,7 @@ export class RsMoveScene extends Phaser.Scene {
     private redshirtOrderMarkers: Array<Image>;
 
     private movableTiles: Array<any>;
-    private orderTarget: any;
+    private orderTarget: Entity;
     private destination: Vector2;
 
     constructor() {
@@ -28,6 +30,10 @@ export class RsMoveScene extends Phaser.Scene {
         this.tileMarker = null;
         this.selectionMarker = null;
         this.destination = null;
+        this.playerOrder = null;
+        this.redshirtOrders = [];
+        this.playerOrderMarker = null;
+        this.redshirtOrderMarkers = [];
     }
 
     preload(): void {
@@ -51,27 +57,85 @@ export class RsMoveScene extends Phaser.Scene {
         return gameScene;
     }
 
-    setupMarkers(): void {
+    addPlayerMarker(coord: Vector2): void {
         // Creat the ghost images for order placements
-        const gameBoard = this.gameBoard();
-        this.playerOrderMarker = this.add.image(0, 0, 'player').setAlpha(0.5).setVisible(false);
-
-        gameBoard.redshirts.forEach((redshirt) => {
-            this.redshirtOrderMarkers.push(this.add.image(0, 0, 'redshirt').setAlpha(0.5).setVisible(false));
-        });
+        this.playerOrderMarker = this.add.image(coord.x, coord.y, 'player').setAlpha(0.5).setVisible(false);
     }
 
-    setupOrders(): void {
-        // create blank orders for later
-        let gameBoard = this.gameBoard();
-        console.log('**', gameBoard);
-        let player = gameBoard.getPlayer();
-        console.log('**', gameBoard.getPlayer());
-        this.playerOrder = new MovementOrder(player.position, player);
+    addRedshirtMarker(coord: Vector2): void {
+        this.redshirtOrderMarkers.push(this.add.image(0, 0, 'redshirt').setAlpha(0.5).setVisible(false));
+    }
 
-        gameBoard.redshirts.forEach((redshirt) => {
-            this.redshirtOrders.push(new MovementOrder(redshirt.position, redshirt));
-        });
+    addPlayerOrder(position: Vector2, player: Entity): void {
+        this.playerOrder = new MovementOrder(position, player);
+    }
+
+    addRedshirtOrder(position: Vector2, redshirt: Entity): void {
+        this.redshirtOrders.push(new MovementOrder(position, redshirt));
+    }
+
+    onClick(pointer, gameObject):void {
+        let board = this.gameBoard();
+
+        // If an entity was clicked (destination button) handle first
+        if (gameObject && gameObject.length !== 0 && gameObject[0].type !=='Text') {
+            let newOrder = Map.screenToTileCoords(new Vector2(gameObject[0].x, gameObject[0].y));
+            if (this.orderTarget.typeName == "player") {
+                this.playerOrder.requestedTile = newOrder;
+                this.playerOrderMarker.x = gameObject[0].x;
+                this.playerOrderMarker.y = gameObject[0].y;
+                this.playerOrderMarker.setVisible(true);
+            } else if (this.orderTarget.typeName == "redshirt") {
+                // this.redshirtOrders[this.orderTarget.redshirt].requestedTile = newOrder;
+                // this.redshirtOrderMarkers[this.orderTarget.redshirt].x = gameObject[0].x;
+                // this.redshirtOrderMarkers[this.orderTarget.redshirt].y = gameObject[0].y;
+                // this.redshirtOrderMarkers[this.orderTarget.redshirt].setVisible(true);
+            }
+            console.log('orders now :', this.playerOrder, this.redshirtOrders );
+        }
+
+        // clear any active buttons on click, both as resolve and cancel
+        this.orderTarget = null;
+        this.destroyButtons();
+
+        // Update selection (last clicked tile)
+        let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
+        let screenCoords = Map.tileToScreenCoords(tileCoords);
+        this.selectionMarker.setVisible(true);
+        this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
+        this.destination = tileCoords;
+
+        // If player is selected, queue up movement selection for player
+        let player = board.playerAt(tileCoords);
+        if (player != null) {
+            this.orderTarget = board.player // janky state for which thing is being ordered
+
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+1));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-1));
+        }
+
+        // If redshirt selected; figure out which one and queue movement selection for them
+        let redshirt = board.redshirtAt(tileCoords);
+        if (redshirt != null) {
+            this.orderTarget = redshirt; //janky state for which thing is being ordered
+
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+1));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-1));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y+1));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y-1));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y+1));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y-1));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-2, tileCoords.y));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+2, tileCoords.y));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+2));
+            this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-2));
+        }
     }
 
     create(): void {
@@ -84,8 +148,6 @@ export class RsMoveScene extends Phaser.Scene {
             // this.redshirtOrders // This is the array of start/desired end positions for redshirts
             gameScene.sendMessage({ action: 'update-redshirt-positions', redshirts: this.redshirtOrders });
         });
-
-        // this.setupOrders();
 
         let tileCoords = new Vector2(1, 1);
         let screenCoords = Map.tileToScreenCoords(tileCoords);
@@ -106,68 +168,9 @@ export class RsMoveScene extends Phaser.Scene {
         this.selectionMarker.strokeRect(0, 0, 64, 64);
         this.selectionMarker.setVisible(false);
 
-        // this.setupMarkers();
-
         // Handle all click events
         this.input.on('pointerdown', (pointer, gameObject) => {
-            // If an entity was clicked (destination button) handle first
-            if (gameObject && gameObject.length !== 0 && gameObject[0].type !=='Text') {
-                let newOrder = Map.screenToTileCoords(new Vector2(gameObject[0].x, gameObject[0].y));
-                if (this.orderTarget.player) {
-                    this.playerOrder.requestedTile = newOrder;
-                    this.playerOrderMarker.x = gameObject[0].x;
-                    this.playerOrderMarker.y = gameObject[0].y;
-                    this.playerOrderMarker.setVisible(true);
-                }
-                if (typeof(this.orderTarget.redshirt)!=='undefined') {
-                    this.redshirtOrders[this.orderTarget.redshirt].requestedTile = newOrder;
-                    this.redshirtOrderMarkers[this.orderTarget.redshirt].x = gameObject[0].x;
-                    this.redshirtOrderMarkers[this.orderTarget.redshirt].y = gameObject[0].y;
-                    this.redshirtOrderMarkers[this.orderTarget.redshirt].setVisible(true);
-                }
-                console.log('orders now :', this.playerOrder, this.redshirtOrders );
-            }
-            // clear any active buttons on click, both as resolve and cancel
-            this.orderTarget = {};
-            this.destroyButtons();
-
-            // Update selection (last clicked tile)
-            let tileCoords = Map.screenToTileCoords(new Vector2(pointer.x, pointer.y));
-            let screenCoords = Map.tileToScreenCoords(tileCoords);
-            this.selectionMarker.setVisible(true);
-            this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
-            this.destination = tileCoords;
-
-            // If player is selected, queue up movement selection for player
-            if (this.isAtPlayerCoords(tileCoords)) {
-                this.orderTarget = {player:true}; //janky state for which thing is being ordered
-
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-1));
-            }
-
-            // If redshirt selected; figure out which one and queue movement selection for them
-            let redshirtIndex = this.getIndexOfRedshirtClicked(tileCoords);
-            if (-1 !== redshirtIndex) {
-                this.orderTarget = {redshirt:redshirtIndex}; //janky state for which thing is being ordered
-
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y+1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+1, tileCoords.y-1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y+1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-1, tileCoords.y-1));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x-2, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x+2, tileCoords.y));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y+2));
-                this.spawnOrderTargetButton(tileCoords, new Vector2(tileCoords.x, tileCoords.y-2));
-            }
+            this.onClick(pointer, gameObject);
         });
 
         // Testing

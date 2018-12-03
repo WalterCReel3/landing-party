@@ -56,6 +56,28 @@ export class GameBoardScene extends Phaser.Scene {
         return entity;
     }
 
+    redshirtAt(tileCoords: Vector2): Entity {
+        let ret = null;
+        this.redshirts.forEach((redshirt) => {
+            if ((redshirt.position.x == tileCoords.x) && (redshirt.position.y == tileCoords.y)) {
+                console.log('FOUND!');
+                ret = redshirt;
+            }
+        });
+
+        console.log('=-', ret);
+        return ret;
+    }
+
+    playerAt(tileCoords: Vector2): Entity {
+        let ret = null;
+        if (this.player && (this.player.position.x == tileCoords.x) && (this.player.position.y == tileCoords.y)) {
+            ret = this.player;
+        }
+
+        return ret;
+    }
+
     getPlayer(): any {
         return this.player;
     }
