@@ -36,6 +36,9 @@ export class GameBoardScene extends Phaser.Scene {
     init(input): void {
         console.log(input);
         this.inputState = input;
+
+        this.scene.launch('RsMoveScene',);
+        this.scene.bringToTop('RsMoveScene');
     }
 
     loadMap(name: string): void {
@@ -71,7 +74,7 @@ export class GameBoardScene extends Phaser.Scene {
         });
 
         console.log('!!', this.redshirts)
-        this.pursuer = this.makeSprite(this.map.getPursuerObject(), 'monster');
+        this.pursuer = this.makeEntity(this.map.getPursuerObject());
     }
 
     create(): void {
@@ -80,9 +83,6 @@ export class GameBoardScene extends Phaser.Scene {
 
         if (!this.inputState.playerLocation) {
         }
-
-        const parentActor: any = this.scene.get(this.inputState.parentActor);
-        parentActor.sendMessage('It works!');
     }
 
     update(): void {
@@ -101,10 +101,19 @@ export class GameBoardScene extends Phaser.Scene {
                 }
             });
         } else if (message.action === 'update-player-position') {
-            let destination = message.player.requestedTile;
-            if (destination) {
-                this.player.setPosition(destination);
+            if (message.player.requestedTile) {
+                let destination = message.player.requestedTile;
+                if (destination) {
+                    this.player.setPosition(destination);
+                }
             }
+        } else if (message.action === 'update-pursuer-position') {
+            const {x, y} = message;
+            const newPos = new Vector2(x, y);
+            this.pursuer.setPosition(newPos);
+
+            const newCoords = Map.tileToScreenCoords(newPos);
+            this.pursuer.sprite.setX(newCoords.x + 32).setY(newCoords.y + 32);
         }
     }
 }
