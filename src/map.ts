@@ -69,9 +69,15 @@ export class Map  {
             this.board.push(row);
             for (let i = 0; i < tilemap.width; i++) {
                 let tile = tilemap.getTileAt(i, j);
-                row.push(tile.collideDown);
+                row.push(!tile.collideDown);
             }
         }
+    }
+
+    getMovableBoard(): number[][] {
+        let board = this.board;
+        board.map(row => row.map(movable => movable)); //clone the board array
+        return board;
     }
 
     getPlayerObject(): MapObject {
