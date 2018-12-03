@@ -47,9 +47,6 @@ const djikstra = ({ board, start, goal, limitDistance }) => {
 
 
     const categorizeUnknownNeighbors = ({ current }) => {
-        if (!current.movable) {
-            console.log("wtf, did you call on a non movable tile?");
-        }
         current.connections.forEach(node => {
             const newDist = current.distance + 1;
             if(limitDistance && limitDistance < newDist){
