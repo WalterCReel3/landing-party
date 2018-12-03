@@ -95,7 +95,7 @@ export class RsMoveScene extends Phaser.Scene {
 
             const gameScene = this.gameBoard();
             gameScene.sendMessage({ action: 'update-redshirt-positions', redshirts: this.redshirtOrders });
-            gameScene.sendMessage({ action: 'update-player-position', player: this.playerOrder});
+            // gameScene.sendMessage({ action: 'update-player-position', player: this.playerOrder});
 
             this.scene.start('PursuerMoveScene');
             this.scene.stop('RsMoveScene');
@@ -206,7 +206,7 @@ export class RsMoveScene extends Phaser.Scene {
     }
 
     spawnValidTargetButtons(startCords, distance): void {
-        let movableBoard = this.getMovableBoard;
+        let movableBoard = this.getMovableBoard();
         let tiles = getValid({board: movableBoard, position:[startCords.x,startCords.y], limitDistance:distance});
         tiles.map((tile) => this.spawnOrderTargetButton(new Vector2(tile[0],tile[1])))
     }
