@@ -93,9 +93,10 @@ export class RsMoveScene extends Phaser.Scene {
         proceedButton.on('pointerdown', () => {
 
             const gameScene = this.gameBoard();
-			// This is where I need the start and end pos for each redshirt
-            // this.redshirtOrders // This is the array of start/desired end positions for redshirts
             gameScene.sendMessage({ action: 'update-redshirt-positions', redshirts: this.redshirtOrders });
+
+            this.scene.start('PursuerMoveScene');
+            this.scene.stop('RsMoveScene');
         });
 
         let tileCoords = new Vector2(1, 1);
