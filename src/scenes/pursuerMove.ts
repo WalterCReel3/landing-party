@@ -43,8 +43,8 @@ export class PursuerMoveScene extends Phaser.Scene {
         console.log('move complete')
         console.log(board.pursuer.position)
         board.sendMessage({ action: 'update-pursuer-position', x, y});
-        this.scene.start('RsMoveScene');
         this.scene.stop('PursuerMoveScene');
+        // this.scene.start('RsMoveScene');
     }
 
     create(): void {

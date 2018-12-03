@@ -112,10 +112,13 @@ export class GameBoardScene extends Phaser.Scene {
                 this.player.setPosition(newCoords);
             }
         } else if (message.action === 'update-pursuer-position') {
-            console.log("YEEEAAAAAAAh")
-            console.log(message.x, message.y)
-            const newCoords = Map.tileToScreenCoords(new Vector2(message.x, message.y));
+            const {x, y} = message;
+            const newPos = new Vector2(x, y);
+            this.pursuer.setPosition(newPos);
+
+            const newCoords = Map.tileToScreenCoords(newPos);
             this.pursuer.sprite.setX(newCoords.x + 32).setY(newCoords.y + 32);
+            // console.log(this.pursuer)
         }
     }
 }
