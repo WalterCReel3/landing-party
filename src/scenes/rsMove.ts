@@ -44,6 +44,7 @@ export class RsMoveScene extends Phaser.Scene {
 
         this.movableTiles = [];
         this.redshirtOrders = [];
+        this.redshirtOrderMarkers = [];
     }
 
     gameBoard(): any {
@@ -51,27 +52,39 @@ export class RsMoveScene extends Phaser.Scene {
         return gameScene;
     }
 
-    setupMarkers(): void {
-        // Creat the ghost images for order placements
-        const gameBoard = this.gameBoard();
-        this.playerOrderMarker = this.add.image(0, 0, 'player').setAlpha(0.5).setVisible(false);
+    getPlayerMovementOrder(): MovementOrder {
+        if (!this.playerOrder) {
+            let gameBoard = this.gameBoard();
+            let player = gameBoard.getPlayer();
 
-        gameBoard.redshirts.forEach((redshirt) => {
-            this.redshirtOrderMarkers.push(this.add.image(0, 0, 'redshirt').setAlpha(0.5).setVisible(false));
-        });
+            this.playerOrder = new MovementOrder(player.position, player);
+        }
+        return this.playerOrder;
     }
 
-    setupOrders(): void {
-        // create blank orders for later
-        let gameBoard = this.gameBoard();
-        console.log('**', gameBoard);
-        let player = gameBoard.getPlayer();
-        console.log('**', gameBoard.getPlayer());
-        this.playerOrder = new MovementOrder(player.position, player);
+    getRedshirtMovementOrder(index): MovementOrder {
+        if (!this.redshirtOrders[index]) {
+            let gameBoard = this.gameBoard();
+            let redshirt = gameBoard.redshirts[index];
+            if (redshirt) {
+                this.redshirtOrders[index] = new MovementOrder(redshirt.position, redshirt);
+            }
+        }
+        return this.redshirtOrders[index];
+    }
 
-        gameBoard.redshirts.forEach((redshirt) => {
-            this.redshirtOrders.push(new MovementOrder(redshirt.position, redshirt));
-        });
+    getPlayerOrderMarker(): Image {
+        if (!this.playerOrderMarker) {
+            this.playerOrderMarker = this.add.image(0, 0, 'player').setAlpha(0.5).setVisible(false);
+        }
+        return this.playerOrderMarker;
+    }
+
+    getRedshirtOrderMarker(index): Image {
+        if (!this.redshirtOrderMarkers[index]) {
+            this.redshirtOrderMarkers[index] = this.add.image(0, 0, 'redshirt').setAlpha(0.5).setVisible(false);
+        }
+        return this.redshirtOrderMarkers[index];
     }
 
     create(): void {
@@ -84,8 +97,6 @@ export class RsMoveScene extends Phaser.Scene {
             // this.redshirtOrders // This is the array of start/desired end positions for redshirts
             gameScene.sendMessage({ action: 'update-redshirt-positions', redshirts: this.redshirtOrders });
         });
-
-        // this.setupOrders();
 
         let tileCoords = new Vector2(1, 1);
         let screenCoords = Map.tileToScreenCoords(tileCoords);
@@ -106,24 +117,24 @@ export class RsMoveScene extends Phaser.Scene {
         this.selectionMarker.strokeRect(0, 0, 64, 64);
         this.selectionMarker.setVisible(false);
 
-        // this.setupMarkers();
-
         // Handle all click events
         this.input.on('pointerdown', (pointer, gameObject) => {
             // If an entity was clicked (destination button) handle first
             if (gameObject && gameObject.length !== 0 && gameObject[0].type !=='Text') {
                 let newOrder = Map.screenToTileCoords(new Vector2(gameObject[0].x, gameObject[0].y));
                 if (this.orderTarget.player) {
-                    this.playerOrder.requestedTile = newOrder;
-                    this.playerOrderMarker.x = gameObject[0].x;
-                    this.playerOrderMarker.y = gameObject[0].y;
-                    this.playerOrderMarker.setVisible(true);
+                    this.getPlayerMovementOrder().requestedTile = newOrder;
+                    let playerGhost = this.getPlayerOrderMarker();
+                    playerGhost.x = gameObject[0].x;
+                    playerGhost.y = gameObject[0].y;
+                    playerGhost.setVisible(true);
                 }
                 if (typeof(this.orderTarget.redshirt)!=='undefined') {
-                    this.redshirtOrders[this.orderTarget.redshirt].requestedTile = newOrder;
-                    this.redshirtOrderMarkers[this.orderTarget.redshirt].x = gameObject[0].x;
-                    this.redshirtOrderMarkers[this.orderTarget.redshirt].y = gameObject[0].y;
-                    this.redshirtOrderMarkers[this.orderTarget.redshirt].setVisible(true);
+                    this.getRedshirtMovementOrder(this.orderTarget.redshirt).requestedTile = newOrder;
+                    let redshirtGhost = this.getRedshirtOrderMarker(this.orderTarget.redshirt);
+                    redshirtGhost.x = gameObject[0].x;
+                    redshirtGhost.y = gameObject[0].y;
+                    redshirtGhost.setVisible(true);
                 }
                 console.log('orders now :', this.playerOrder, this.redshirtOrders );
             }
