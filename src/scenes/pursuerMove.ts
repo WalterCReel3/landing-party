@@ -7,6 +7,11 @@ export class PursuerMoveScene extends Phaser.Scene {
         });
     }
 
+    gameBoard(): any {
+        const gameScene = this.scene.get('GameBoardScene');
+        return gameScene;
+    }
+
     preload(): void {
     }
 
@@ -14,6 +19,7 @@ export class PursuerMoveScene extends Phaser.Scene {
     }
 
     create(): void {
+        let board = this.gameBoard();
     }
 
 	update(): void {
