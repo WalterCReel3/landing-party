@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="64" tileheight="64" nextobjectid="3">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="64" tileheight="64" nextobjectid="6">
  <tileset firstgid="1" name="2dtop-tileset-64" tilewidth="64" tileheight="64" tilecount="276" columns="4">
   <image source="2dtop-full-set.png" width="256" height="4416"/>
  </tileset>
@@ -9,11 +9,20 @@
   </data>
  </layer>
  <objectgroup name="Object Layer 1">
-  <object id="1" name="captain" x="162.667" y="176">
+  <object id="1" name="captain" type="captain" x="162.667" y="176">
    <polyline points="0,0 0,-34.6667"/>
   </object>
-  <object id="2" name="objective" x="1057.33" y="745.333">
+  <object id="2" name="objective" type="objective" x="1057.33" y="745.333">
    <polyline points="0,0 -2.66667,-22.6667"/>
+  </object>
+  <object id="3" name="redshirt1" type="redshirt" x="222.667" y="174.667">
+   <polyline points="0,0 -5.33333,-38.6667"/>
+  </object>
+  <object id="4" name="redshirt2" type="redshirt" x="228" y="304">
+   <polyline points="0,0 -1.33333,-28"/>
+  </object>
+  <object id="5" name="pursuer" type="pursuer" x="989.333" y="305.333">
+   <polyline points="0,0 -1.33333,-36"/>
   </object>
  </objectgroup>
 </map>

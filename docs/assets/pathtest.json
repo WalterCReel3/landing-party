@@ -30,7 +30,7 @@
                          "y":-34.6666666666667
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"captain",
                  "visible":true,
                  "width":0,
                  "x":162.666666666667,
@@ -50,11 +50,71 @@
                          "y":-22.6666666666666
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"objective",
                  "visible":true,
                  "width":0,
                  "x":1057.33333333333,
                  "y":745.333333333333
+                }, 
+                {
+                 "height":0,
+                 "id":3,
+                 "name":"redshirt1",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":-5.33333333333334,
+                         "y":-38.6666666666667
+                        }],
+                 "rotation":0,
+                 "type":"redshirt",
+                 "visible":true,
+                 "width":0,
+                 "x":222.666666666667,
+                 "y":174.666666666667
+                }, 
+                {
+                 "height":0,
+                 "id":4,
+                 "name":"redshirt2",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":-1.33333333333334,
+                         "y":-28
+                        }],
+                 "rotation":0,
+                 "type":"redshirt",
+                 "visible":true,
+                 "width":0,
+                 "x":228,
+                 "y":304
+                }, 
+                {
+                 "height":0,
+                 "id":5,
+                 "name":"pursuer",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":-1.33333333333326,
+                         "y":-36
+                        }],
+                 "rotation":0,
+                 "type":"pursuer",
+                 "visible":true,
+                 "width":0,
+                 "x":989.333333333333,
+                 "y":305.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -62,7 +122,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":3,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.3",
