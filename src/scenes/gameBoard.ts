@@ -104,6 +104,13 @@ export class GameBoardScene extends Phaser.Scene {
                     redshirtSprite.sprite.setX(newCoords.x + 32).setY(newCoords.y + 32);
                 }
             });
+        } else if (message.action === 'update-player-position') {
+            if (message.player.requestedTile) {
+                const newX = message.player.requestedTile.x;
+                const newY = message.player.requestedTile.Y;
+                const newCoords = Map.tileToScreenCoords(new Vector2(newX, newY));
+                this.player.setPosition(newCoords);
+            }
         }
     }
 }
