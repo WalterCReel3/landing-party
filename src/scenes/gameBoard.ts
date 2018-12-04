@@ -110,6 +110,7 @@ export class GameBoardScene extends Phaser.Scene {
                 if (this.objective.position.equals(destination)) {
                     // Trigger Wining screen
                     this.scene.stop('RsMoveScene');
+                    this.scene.sendToBack('RsMoveScene');
                     this.scene.start('WinScene');
                 }
             }
@@ -119,9 +120,8 @@ export class GameBoardScene extends Phaser.Scene {
             this.pursuer.setPosition(newPos);
             if (this.player.position.equals(newPos) && !this.objective.position.equals(this.player.position)) {
                 // Trigger winning screen
-                console.log("you lost", this.scene.manager.keys);
-
                 this.scene.stop('RsMoveScene');
+                this.scene.sendToBack('RsMoveScene');
                 this.scene.start('LossScene');
             }
         }
