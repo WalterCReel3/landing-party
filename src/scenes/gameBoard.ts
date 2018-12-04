@@ -106,14 +106,23 @@ export class GameBoardScene extends Phaser.Scene {
                 if (destination) {
                     this.player.setPosition(destination);
                 }
+                if (this.objective.position.equals(destination)) {
+                    // Trigger Wining screen
+                    this.scene.stop('RsMoveScene');
+                    this.scene.start('WinScene');
+                }
             }
         } else if (message.action === 'update-pursuer-position') {
             const {x, y} = message;
             const newPos = new Vector2(x, y);
             this.pursuer.setPosition(newPos);
+            if (this.player.position.equals(newPos)) {
+                // Trigger winning screen
+                console.log("you lost", this.scene.manager.keys);
 
-            const newCoords = Map.tileToScreenCoords(newPos);
-            this.pursuer.sprite.setX(newCoords.x + 32).setY(newCoords.y + 32);
+                this.scene.stop('RsMoveScene');
+                this.scene.start('LossScene');
+            }
         }
     }
 }

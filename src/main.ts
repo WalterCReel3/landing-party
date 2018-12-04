@@ -6,6 +6,8 @@ import { HowToScene } from './scenes/howto';
 import { GameBoardScene } from './scenes/gameBoard';
 import { RsMoveScene } from './scenes/rsMove';
 import { PursuerMoveScene } from './scenes/pursuerMove';
+import { LossScene } from './scenes/lose';
+import { WinScene } from './scenes/win';
 
 /// <reference path="../phaser.d.ts"/>
 
@@ -36,6 +38,8 @@ class Game {
         this.phaser.scene.add('HowToScene', HowToScene, false);
         this.phaser.scene.add('RsMoveScene', RsMoveScene, false);
         this.phaser.scene.add('PursuerMoveScene', PursuerMoveScene, false);
+        this.phaser.scene.add('WinScene', WinScene, false);
+        this.phaser.scene.add('LossScene', LossScene, false);
     }
 }
 
