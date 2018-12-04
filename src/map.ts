@@ -40,7 +40,7 @@ export class Map  {
         this.tileLayer = this.tilemap.createStaticLayer("Tile Layer 1", this.tileset, 0, 0);
 
         // Define some tile attributes
-        this.tileLayer.setCollisionBetween(0, 7);
+        this.tileLayer.setCollisionBetween(0, 10);
 
         // Get the map objects layer
         this.objectLayer = this.tilemap.getObjectLayer('Object Layer 1');

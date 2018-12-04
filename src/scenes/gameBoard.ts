@@ -31,6 +31,7 @@ export class GameBoardScene extends Phaser.Scene {
         this.load.image("tiles", "assets/2dtop-full-set.png");
         this.load.tilemapTiledJSON("pathtest", "assets/pathtest.json");
         this.load.tilemapTiledJSON("board01", "assets/board01.json");
+        this.load.tilemapTiledJSON("board02", "assets/board02.json");
     }
 
     init(input): void {
@@ -78,7 +79,7 @@ export class GameBoardScene extends Phaser.Scene {
     }
 
     create(): void {
-        this.loadMap("pathtest");
+        this.loadMap("board02");
         this.loadEntities();
 
         if (!this.inputState.playerLocation) {
