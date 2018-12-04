@@ -38,11 +38,31 @@ export class PursuerMoveScene extends Phaser.Scene {
             limitDistance: undefined
         });
         path = path.slice(0, 4); //limit path to 4 moves
-        let [x, y] = path.pop(); //get last move
-        // board.pursuer.position = new Vector2(newX, newY);
-        console.log('move complete')
-        console.log(board.pursuer.position)
-        board.sendMessage({ action: 'update-pursuer-position', x, y});
+        
+        let previousTile = [startx, starty];
+        let redshirtFound;
+        let redshirtFoundTileAt;
+        path.forEach(tile => {
+            board.redshirts.forEach(redshirt => {
+                const {x: rx, y: ry} = redshirt.position;
+                const [tx, ty] = tile;
+                if(tx === rx && ty === ry && !redshirtFound){ // !redshirtFound is my breakout
+                    // red shirt is on the next spot, use previous
+                    redshirtFound = redshirt;
+                    redshirtFoundTileAt = [tx, ty];
+                }
+            });
+        });
+
+        let newTileX, newTileY;
+        if(redshirtFound){
+            [newTileX, newTileY] = redshirtFoundTileAt;
+            board.redshirts = board.redshirts.filter(redshirt => redshirt == redshirtFound);
+        } else {
+            [newTileX, newTileY] = path.pop(); //get last move
+        }
+
+        board.sendMessage({ action: 'update-pursuer-position', newTileX, newTileY});
         this.scene.start('RsMoveScene');
         this.scene.stop('PursuerMoveScene');
     }
