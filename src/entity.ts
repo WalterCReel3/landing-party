@@ -18,9 +18,15 @@ class BaseEntity {
 }
 
 class CharacterEntity extends BaseEntity {
-    constructor(mapObject: MapObject) {
+    spriteName: string;
+
+    constructor(scene: Phaser.Scene, mapObject: MapObject, spriteName: string) {
         super();
         this.id = mapObject.name;
+        this.spriteName = spriteName;
+        this.position = new Vector2().copy(mapObject.coords);
+        let screenCoords = this.spriteCoords();
+        this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, this.spriteName);
     }
 
     spriteCoords(): Vector2 {
@@ -38,47 +44,26 @@ class CharacterEntity extends BaseEntity {
 }
 
 class Player extends CharacterEntity {
-    static spriteName = "player";
-
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
-        super(mapObject);
-        this.position = new Vector2().copy(mapObject.coords);
-        let screenCoords = this.spriteCoords();
-        this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Player.spriteName);
+        super(scene, mapObject, "player");
     }
-
 }
 
 class RedShirt extends CharacterEntity {
-    static spriteName = "redshirt";
-
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
-        super(mapObject);
-        this.position = new Vector2().copy(mapObject.coords);
-        let screenCoords = this.spriteCoords();
-        this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, RedShirt.spriteName);
+        super(scene, mapObject, "redshirt");
     }
 }
 
 class Pursuer extends CharacterEntity {
-    static spriteName = "monster";
-
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
-        super(mapObject);
-        this.position = new Vector2().copy(mapObject.coords);
-        let screenCoords = this.spriteCoords();
-        this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Pursuer.spriteName);
+        super(scene, mapObject, "monster");
     }
 }
 
 class Objective extends CharacterEntity {
-    static spriteName = "star";
-
     constructor(scene: Phaser.Scene, mapObject: MapObject) {
-        super(mapObject);
-        this.position = new Vector2().copy(mapObject.coords);
-        let screenCoords = this.spriteCoords();
-        this.sprite = scene.physics.add.sprite(screenCoords.x, screenCoords.y, Objective.spriteName);
+        super(scene, mapObject, "star");
     }
 }
 
