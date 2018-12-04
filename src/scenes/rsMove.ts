@@ -153,7 +153,7 @@ export class RsMoveScene extends Phaser.Scene {
             if (this.isAtPlayerCoords(tileCoords)) {
                 this.orderTarget = {player:true}; //janky state for which thing is being ordered
 
-                this.spawnValidTargetButtons(tileCoords, 1);
+                this.spawnValidTargetButtons(tileCoords, 2);
             }
 
             // If redshirt selected; figure out which one and queue movement selection for them
