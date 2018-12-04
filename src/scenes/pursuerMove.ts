@@ -58,10 +58,8 @@ export class PursuerMoveScene extends Phaser.Scene {
         let newTileX, newTileY;
         if(redshirtFound){
             [newTileX, newTileY] = previousTile;
-            board.redshirts = board.redshirts.filter(redshirt => redshirt === redshirtFound);
-            console.log(board.redshirts)
-            console.log(board.redshirts.filter(redshirt => redshirt === redshirtFound));
-            console.log(redshirtFound)
+            redshirtFound.sprite.setVisible(false);
+            board.redshirts = board.redshirts.filter(redshirt => redshirt !== redshirtFound);
         } else {
             [newTileX, newTileY] = path.pop(); //get last move
         }
