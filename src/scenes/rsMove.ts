@@ -18,7 +18,6 @@ export class RsMoveScene extends Phaser.Scene {
 
     private movableTiles: Array<any>;
     private orderTarget: any;
-    private destination: Vector2;
 
     constructor() {
         super({
@@ -28,7 +27,6 @@ export class RsMoveScene extends Phaser.Scene {
 
         this.tileMarker = null;
         this.selectionMarker = null;
-        this.destination = null;
     }
 
     preload(): void {
@@ -42,6 +40,24 @@ export class RsMoveScene extends Phaser.Scene {
 
         this.movableTiles = [];
         this.redshirtOrders = [];
+        this.redshirtOrderMarkers = [];
+    }
+
+    unload(): void {
+        this.destroyButtons();
+        this.orderTarget = {};
+
+        this.tileMarker.setVisible(false);
+        this.selectionMarker.setVisible(false);
+
+        this.playerOrder = null;
+        this.redshirtOrders = [];
+
+        if (this.playerOrderMarker) {
+            this.playerOrderMarker.destroy();
+        }
+        this.playerOrderMarker = null;
+        this.redshirtOrderMarkers.map((x) => {x.destroy();});
         this.redshirtOrderMarkers = [];
     }
 
@@ -95,6 +111,7 @@ export class RsMoveScene extends Phaser.Scene {
             gameScene.sendMessage({ action: 'update-player-position', player: this.playerOrder});
 
             this.scene.start('PursuerMoveScene');
+            this.unload();
             this.scene.stop('RsMoveScene');
         });
 
@@ -147,7 +164,6 @@ export class RsMoveScene extends Phaser.Scene {
             let screenCoords = Map.tileToScreenCoords(tileCoords);
             this.selectionMarker.setVisible(true);
             this.selectionMarker.setX(screenCoords.x).setY(screenCoords.y);
-            this.destination = tileCoords;
 
             // If player is selected, queue up movement selection for player
             if (this.isAtPlayerCoords(tileCoords)) {
@@ -164,15 +180,6 @@ export class RsMoveScene extends Phaser.Scene {
                 this.spawnValidTargetButtons(tileCoords, 2);
             }
         });
-
-        // Testing
-        //const gamescene = this.gameBoard();
-        //function testfunc() {
-        //    gamescene.sendMessage({ action: 'update-redshirt-positions',
-        //        redshirts: [ { newX: 5, newY: 7, oldX:3, oldY: 2 } ]
-        //    });
-        //}
-        //setTimeout(testfunc, 4000);
     }
 
     update(): void {
@@ -185,7 +192,6 @@ export class RsMoveScene extends Phaser.Scene {
 	}
 
     sendMessage(message): void {
-        // console.log(message);
     }
 
     private getMovableBoard(): number[][] {
@@ -215,6 +221,7 @@ export class RsMoveScene extends Phaser.Scene {
 
     destroyButtons(): void {
       this.movableTiles.map((x) => {x.destroy();});
+      this.movableTiles = [];
     }
 
     // Start hardcoded stubs: TODO implement plz
