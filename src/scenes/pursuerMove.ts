@@ -1,5 +1,6 @@
 import Phaser = require('phaser');
 import { getPath } from "../pathfinding";
+import { GameConstants } from "../constants";
 import Vector2 = Phaser.Math.Vector2;
 
 export class PursuerMoveScene extends Phaser.Scene {
@@ -37,8 +38,8 @@ export class PursuerMoveScene extends Phaser.Scene {
             goal: [goalx, goaly],
             limitDistance: undefined
         });
-        path = path.slice(0, 4); //limit path to 4 moves
-        
+        path = path.slice(0, GameConstants.PURSUER_MOVESPEED); //limit path to 4 moves
+
         let previousTile = [startx, starty];
         let redshirtFound;
         path.forEach(tile => {

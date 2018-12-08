@@ -2,6 +2,8 @@ import Phaser = require('phaser');
 import { Map, MapObject } from "../map";
 import { MovementOrder } from "../commands";
 import { getValid } from "../pathfinding";
+import { GameConstants } from "../constants";
+
 import Vector2 = Phaser.Math.Vector2;
 import Graphics = Phaser.GameObjects.Graphics;
 import Image = Phaser.GameObjects.Image;
@@ -169,7 +171,7 @@ export class RsMoveScene extends Phaser.Scene {
             if (this.isAtPlayerCoords(tileCoords)) {
                 this.orderTarget = {player:true}; //janky state for which thing is being ordered
 
-                this.spawnValidTargetButtons(tileCoords, 2);
+                this.spawnValidTargetButtons(tileCoords, GameConstants.PLAYER_MOVESPEED);
             }
 
             // If redshirt selected; figure out which one and queue movement selection for them
@@ -177,7 +179,7 @@ export class RsMoveScene extends Phaser.Scene {
             if (-1 !== redshirtIndex) {
                 this.orderTarget = {redshirt:redshirtIndex}; //janky state for which thing is being ordered
 
-                this.spawnValidTargetButtons(tileCoords, 2);
+                this.spawnValidTargetButtons(tileCoords, GameConstants.REDSHIRT_MOVESPEED);
             }
         });
     }
